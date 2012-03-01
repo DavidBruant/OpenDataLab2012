@@ -13,7 +13,7 @@
     });
     
     $(function(){
-        var kmllayer = new google.maps.KmlLayer('./BDVBDX.kml', {
+        var kmllayer = new google.maps.KmlLayer('http://davidbruant.github.com/OpenDataLab2012/BDVBDX.kml', {
             map: map,
             clickable: true
         });
