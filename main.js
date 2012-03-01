@@ -13,7 +13,18 @@
     });
     
     $(function(){
-        var kmllayer = new google.maps.KmlLayer('./BDVBDX.kml');
-        kmllayer.setMap(map);
+        var kmllayer = new google.maps.KmlLayer('./BDVBDX.kml', {
+            map: map,
+            clickable: true
+        });
+        google.maps.event.addListener(kmllayer, 'status_changed', function(){
+            console.log('status changed event');
+            console.log('new status', kmllayer.getStatus());
+        })
+
+
+        console.log('kmllayer status', kmllayer.getStatus());
+        
+        //kmllayer.setMap(map);
     })
 })();
