@@ -93,7 +93,21 @@
     
     $.when(geomapP, polygonsP).then(function(geomap, polygons){
         Object.keys(polygons).forEach(function(bdv){
-            polygons[bdv].setMap(geomap);
+            var pol = polygons[bdv];
+            
+            dataP.then(function(data){
+                var d = data[bdv];
+                if(d){
+                    pol.setOptions({
+                        fillColor: d["Delaunay (PS)"] < d["Juppé (UMP)"] ? 'blue' : 'red'
+                    });
+                }
+                else{
+                    console.log(bdv);
+                }
+            });
+        
+            pol.setMap(geomap);
         });
     });
     
