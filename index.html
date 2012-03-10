@@ -1,23 +1,39 @@
 ﻿<!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
     <style type="text/css">
-    html { height: 100%; }
-    body { height: 100%; margin: 0; padding: 0; }
+    *{margin: 0; padding: 0;}
+    html, body { height: 100%; }
+    
     #map_canvas {
-        width:100%; 
-        height: 100%
+        width: 100%;
+        height: 80%;
+    }
+    #years {
+        width: 100%;
+        height: 20%;
     }
     </style>
+    
 
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAcwvPWwZKDsjt8fa0gAOTgwP0PvuizjgE&sensor=false"> </script>
     <script src="jquery.js"> </script>
     <script src="main.js"> </script>
-
+    
+    <title>Open data lab - Législatives 2ème circonscription Bordeaux</title>
   </head>
   <body>
+    <div id="years">
+        <button>1997</button>
+        <button>2002</button>
+        <button>2004</button>
+        <button>2007</button>
+        <div id="infos"></div>
+        
+    </div>
+  
     <div id="map_canvas"></div>
   </body>
 </html>

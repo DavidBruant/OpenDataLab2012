@@ -19,79 +19,144 @@
 
 (function(){
     "use strict";
-    var geomap;
+    var SPACE = ' ';
+    
+    var geomapDefer = new $.Deferred();
+    var geomapP = geomapDefer.promise();
+    
     var data = Object.create(null); // TODO shim (+forEach, + map)
+    var infos;
 
     $(function initialize() {
         var myOptions = {
-            center: new google.maps.LatLng(44.84, -0.6),
-            zoom: 12,
+            center: new google.maps.LatLng(44.84, -0.57),
+            zoom: 13,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        geomap = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        
+        var geomap = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        geomapDefer.resolve(geomap)        
+        
+        infos = $('#infos')
     });
     
-    $(function(){
-        var kmllayer = new google.maps.KmlLayer('http://davidbruant.github.com/OpenDataLab2012/BDVBDX.kml', {
-            map: geomap,
-            //suppressInfoWindows: true | false, // Suppress the rendering of info windows when layer features are clicked.
-            clickable: true
+    var polygonsP = (function KMLTreatment(){
+        var polygonsDefer = new $.Deferred();
+    
+        var kmlP = $.get('./BDVBDX.kml').then(function(kml){
+            console.log("KML retrieved");
+            var polygons = Object.create(null);
+            
+            var placemarks = $(kml).find('Folder Placemark');
+            
+            var polPs = [];
+            
+            placemarks.each(function(i, e){
+                var bdvName = $(e).find('name').text();
+                
+                var polygonCoordsStr = $(e).find('Polygon coordinates').text().trim(); // TODO compat: trim
+                var polygonCoords = polygonCoordsStr.split(SPACE);
+                //console.log('polygonCoords', polygonCoords)
+                
+                var polygonPath = polygonCoords.map(function(e, i){
+                    var coords = e.split(',').slice(0, 2);
+                    // Careful with long/lat order. google.maps.LatLng expects it in reverse KML order
+                    var latlng = new google.maps.LatLng( parseFloat(coords[1]) , parseFloat(coords[0]) );
+                    
+                    return latlng;
+                });
+                
+
+                var pol = new google.maps.Polygon({
+                    paths : polygonPath,
+
+                    fillOpacity: 0.5,
+                    fillColor: 'white',
+
+                    strokeColor : 'grey',
+                    strokeWeight: 1
+                });
+                
+                google.maps.event.addListener(pol, 'click', function(e){
+                    //console.log('clic', bdvName, $(infos));
+                    $(infos).text(JSON.stringify(data[bdvName]));
+                });
+                
+                polygons[bdvName] = pol;
+            });
+            polygonsDefer.resolve(polygons);
+            console.log("Polygon keys", Object.keys(polygons));
         });
         
-        google.maps.event.addListener(kmllayer, 'status_changed', function(){
-            console.log('status changed event');
-            console.log('new status', kmllayer.getStatus());
-            //console.log(Object.keys(kmllayer));
-        })
-
-        console.log('kmllayer status', kmllayer.getStatus());
+        return polygonsDefer.promise();
+    })();
+    
+    $.when(geomapP, polygonsP).then(function(geomap, polygons){
+        Object.keys(polygons).forEach(function(bdv){
+            polygons[bdv].setMap(geomap);
+        });
     });
     
-    var csvDataP = $.ajax({
-        url:'./Législatives bordeaux.csv',
-        dataType: "text"
-    });
-    csvDataP.fail(function(csvError){
-        console.log('CSV Error', csvError);
-    });
+    var dataP = (function(){
+        var dataDefer = new $.Deferred();
         
-    csvDataP.then(function(csvData){
-        console.log('CSV retrieved');
-        // parsing CSV
-        var lines = csvData.split('\n');
-        lines.forEach(function(l, i){
-            lines[i] = lines[i].split(';');
+        var csvDataP = $.ajax({
+            url:'./Législatives bordeaux 2007.csv',
+            dataType: "text"
+        }).then(function(csvData){
+            console.log('CSV retrieved');
+            // parsing CSV
+            var lines = csvData.split('\n');
+            lines.forEach(function(l, i){
+                lines[i] = lines[i].split(';');
 
-            // removing freaking quote
-            lines[i].forEach(function(e, j){
-                lines[i][j] = e.unquote() || lines[i][j];
-            });
-        });
-        
-        var firstLine = lines.shift();
-        
-        console.log(firstLine);
-        console.log(lines.slice(0,3));
-        
-        var dataArray = lines.map(function(l){
-            var d = {};
-            
-            l.forEach(function(val, i){
-                d[firstLine[i]] = val;
+                // removing freaking quote
+                lines[i].forEach(function(e, j){
+                    lines[i][j] = e.unquote() || lines[i][j];
+                });
             });
             
-            return d;
-        });
-        
-        console.log(dataArray);
-        
-        dataArray.forEach(function(e){
-            var key = e.section + ' ' + e['Bur.'];
-        
-        })
-        
-    });
+            var firstLine = lines.shift();
+            //console.log("firstLine", firstLine);
+            
+            var dataArray = lines.map(function(l){
+                var d = {};
+                
+                l.forEach(function(val, i){
+                    var key = firstLine[i];
+                    
+                    switch(key){
+                        case "Inscrits":
+                            val = parseInt(val);
+                            break;
+                        case "Abst %":
+                        case "Delaunay (PS)":
+                        case "Juppé (UMP)":
+                            val = parseFloat(val);
+                            break;
+                    }
+                
+                    d[key] = val;
+                });
+                
+                return d;
+            });
+            
+            dataArray.forEach(function(e, i){
+                var key = e.Nom;
+                if(!key || key === 'Total')
+                    return;
 
+                data[key] = e;
+            });
+
+            dataDefer.resolve(data);
+            console.log("data keys", Object.keys(data));
+        });
+    
+        return dataDefer.promise();
+    })()
+    
     
     
 })();
