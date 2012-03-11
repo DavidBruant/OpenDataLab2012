@@ -6,14 +6,104 @@
     <style type="text/css">
     *{margin: 0; padding: 0;}
     html, body { height: 100%; }
-    
-    #map_canvas {
-        width: 100%;
-        height: 80%;
+
+    body > *{
+        position: fixed;
+        margin: 0.3em;
+        padding: 0.5em;
+       -moz-box-sizing:    border-box;
+       -webkit-box-sizing: border-box;
+        box-sizing:        border-box;
     }
-    #years {
+    
+    #mapContainer, #years{
+        width: 69%;
+    }
+    #credits, #infos{
+        width: 29%;
+    }
+    #mapContainer, #infos {
+        height: 78%;
+    }
+    #years, #credits {
+        height: 18%;
+    }
+    
+    
+    #mapContainer{
+        bottom: 0;
+        left: 0;
+        padding: 0;
+        
+    }
+    
+    #years{
+        background-color: #EEE;
+        top: 0;
+        left: 0;
+    }
+    
+        #years button {
+            padding: 10px;
+            margin: 10px;
+        }
+    
+    #credits{
+        background-color: #DDD;
+        top: 0;
+        right: 0;
+    }
+    
+    #infos{
+        background-color: #CCC;
+        bottom: 0;
+        right: 0;
+    }
+    
+        .left{
+            color: white;
+            background-color: red;
+        }
+        .right{
+            color: white;
+            background-color: blue;
+        }
+    
+        #infos > *{
+            width: 100%;
+        }
+        #currentYear{
+            border-bottom: 1px solid black;
+        }
+        #bdvTxt{
+            border-bottom: 2px solid black;
+        }
+        
+        #leftRight{
+            display: table;
+            border-collapse: collapse;
+            width: 100%;
+        }
+            #leftRight > *{
+                display: table-row;
+            }
+                #leftRight > * > *{
+                   -moz-box-sizing:    border-box;
+                   -webkit-box-sizing: border-box;
+                    box-sizing:        border-box;
+                    display: table-cell;
+                    width: 50%;
+                    padding: 0.3em;
+                }
+        
+    
+    
+    #map_canvas{
         width: 100%;
-        height: 20%;
+        height: 100%;
+        /* Google Maps adds:
+        position:relative
+        */
     }
     </style>
     
@@ -30,10 +120,31 @@
         <button class="year" data-year=2002>2002</button>
         <button class="year" data-year=2004>2004</button>
         <button class="year" data-year=2007>2007</button>
-
-        <div id="infos"><span class="currentYear"></span><span class="bureauInfos"></span></div>
     </div>
-  
-    <div id="map_canvas"></div>
+    <div id="credits">Blablabla. <a href="#">On a bien bossé</a>. On était plusieurs.</div>
+
+    <div id="mapContainer"> <div id="map_canvas"></div> </div>
+
+    <div id="infos">
+        <div id="currentYear"></div>
+        <div id="bdvTxt">Bureau de vote</div>
+        <div id="bureauInfos">
+            <div id="bureau"></div>
+            <div id="leftRight">
+                <div id="candidates">
+                    <div class="left"></div>  <div class="right"></div>
+                </div>
+                <div id="scores">
+                    <div class="left"></div>  <div class="right"></div>
+                </div>
+                
+            </div>
+            <div id="camenbert"></div>
+
+            <div id="otherInfos">
+            inscrits: XXX | abstention: XXX
+            </div>
+        </div>
+    </div>
   </body>
 </html>

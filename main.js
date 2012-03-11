@@ -17,6 +17,59 @@
 })();
 
 
+(function(global){
+
+
+    global.bdvColor = function(winningSide, percentage){
+        // HSL are far easier to figure out for color scales
+        var H = winningSide === 'droite' ? 249 : 352 ;
+        var S = 0.9;
+        var L = (150 - percentage - 25)/100; 
+        
+        // console.log("light", L);
+        
+        // Computing RGB for compat http://en.wikipedia.org/wiki/HSL_and_HSV
+        var C = (1 - Math.abs(2*L -1))*S;
+        var Hp = H/60;
+        var X = C*(1 - Math.abs(Hp%2 -1));
+        
+        var R1, G1, B1;
+        switch(Math.floor(Hp)){
+            case 0:
+                R1 = C; G1 = X; B1 = 0;
+                break;
+            case 1:
+                R1 = X; G1 = C; B1 = 0;
+                break;
+            case 2:
+                R1 = 0; G1 = C; B1 = X;
+                break;
+            case 3:
+                R1 = 0; G1 = X; B1 = C;
+                break;
+            case 4:
+                R1 = X; G1 = 0; B1 = C;
+                break;
+            case 5:
+                R1 = C; G1 = 0; B1 = X;
+                break;
+        }
+        
+        var m = L - C/2;
+        
+        var R = Math.floor(360*(R1 + m));
+        var G = Math.floor(360*(G1 + m));
+        var B = Math.floor(360*(B1 + m));
+        
+        var ret = 'rgb('+[R,G,B].join(',')+')'
+        // console.log('color', ret);
+        return ret;
+    };
+    
+    
+})(this);
+
+
 (function(){
     "use strict";
     var SPACE = ' ';
@@ -25,8 +78,6 @@
     var geomapP = geomapDefer.promise(),
         polygonsP,
         dataP;
-    
-    var infos;
 
     var currentYear = 2007;
     
@@ -54,13 +105,21 @@
             var yearData = data[currentYear];
             var candidates = candidatesByYear[currentYear];
             
+            //console.log("yearData", yearData);
+
+            $("#currentYear").text(currentYear);
+            // TODO: change this into something less brutal
+            //$('#bureauInfos').text('');
+            
             Object.keys(polygons).forEach(function(bdv){
                 var pol = polygons[bdv];
                 var d = yearData[bdv];
-            
+                
                 if(d){
                     pol.setOptions({
-                        fillColor: d[candidates.gauche] < d[candidates.droite] ? 'blue' : 'red'
+                        fillColor: d[candidates.gauche] < d[candidates.droite] ?
+                            bdvColor('droite', d[candidates.droite]) : 
+                            bdvColor('gauche', d[candidates.gauche])
                     });
                 }
                 else{ // error case
@@ -81,18 +140,13 @@
         var geomap = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
         geomapDefer.resolve(geomap);
         
-        infos = $('#infos');
-        
         $('button.year').click(function(e){
             currentYear = $(e.target).attr('data-year');
-            $("#infos > .currentYear").text(currentYear);
-            
             displayCurrentYear();
         });
         
         // Init
         displayCurrentYear();
-        
     });
     
     // POLYGONS
@@ -121,7 +175,6 @@
                     
                     return latlng;
                 });
-                
 
                 var pol = new google.maps.Polygon({
                     paths : polygonPath,
@@ -129,8 +182,31 @@
                     fillOpacity: 0.5,
                     fillColor: 'white',
 
-                    strokeColor : 'grey',
+                    strokeColor : 'black',
                     strokeWeight: 1
+                });
+                
+                google.maps.event.addListener(pol, 'click', function(){
+                    dataP.then(function(data){
+                        var currentData = data[currentYear][bdvName];
+                        var leftCandidate = candidatesByYear[currentYear]['gauche'];
+                        var rightCandidate = candidatesByYear[currentYear]['droite'];
+                        
+                        var rightScore = currentData[rightCandidate];
+                        var leftScore = currentData[leftCandidate];
+                        
+                        $('#bureau').text(bdvName);
+                        
+                        $('#bureau').removeClass('right')
+                                    .removeClass('left')
+                                    .addClass(rightScore < leftScore ? 'left' : 'right');
+                        
+                        $('#candidates .left').text(leftCandidate);
+                        $('#candidates .right').text(rightCandidate);
+                        $('#scores .left').text(leftScore);
+                        $('#scores .right').text(rightScore);
+                        
+                    });
                 });
                 
                 polygons[bdvName] = pol;
