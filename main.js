@@ -22,10 +22,54 @@
     var SPACE = ' ';
     
     var geomapDefer = new $.Deferred();
-    var geomapP = geomapDefer.promise();
+    var geomapP = geomapDefer.promise(),
+        polygonsP,
+        dataP;
     
-    var data = Object.create(null); // TODO shim (+forEach, + map)
     var infos;
+
+    var currentYear = 2007;
+    
+    var candidatesByYear = {
+        "1997": {
+            gauche: "Savary (PS)",
+            droite: "Juppé (RPR)"
+        },
+        "2002": {
+            gauche: "Paoletti (PS)",
+            droite: "Juppé (UMP)"
+        },
+        "2004": {
+            gauche: "Delaunay (PS)",
+            droite: "Martin (UMP)"
+        },
+        "2007": {
+            gauche: "Delaunay (PS)",
+            droite: "Juppé (UMP)"
+        }
+    }
+
+    function displayCurrentYear(){
+        $.when(dataP, polygonsP).then(function(data, polygons){
+            var yearData = data[currentYear];
+            var candidates = candidatesByYear[currentYear];
+            
+            Object.keys(polygons).forEach(function(bdv){
+                var pol = polygons[bdv];
+                var d = yearData[bdv];
+            
+                if(d){
+                    pol.setOptions({
+                        fillColor: d[candidates.gauche] < d[candidates.droite] ? 'blue' : 'red'
+                    });
+                }
+                else{ // error case
+                    console.warn('Bureau de vote inconnu', bdv);
+                }
+            });
+        });
+    }
+
 
     $(function initialize() {
         var myOptions = {
@@ -35,12 +79,24 @@
         };
         
         var geomap = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-        geomapDefer.resolve(geomap)        
+        geomapDefer.resolve(geomap);
         
-        infos = $('#infos')
+        infos = $('#infos');
+        
+        $('button.year').click(function(e){
+            currentYear = $(e.target).attr('data-year');
+            $("#infos > .currentYear").text(currentYear);
+            
+            displayCurrentYear();
+        });
+        
+        // Init
+        displayCurrentYear();
+        
     });
     
-    var polygonsP = (function KMLTreatment(){
+    // POLYGONS
+    polygonsP = (function KMLTreatment(){
         var polygonsDefer = new $.Deferred();
     
         var kmlP = $.get('./BDVBDX.kml').then(function(kml){
@@ -77,100 +133,104 @@
                     strokeWeight: 1
                 });
                 
-                google.maps.event.addListener(pol, 'click', function(e){
-                    //console.log('clic', bdvName, $(infos));
-                    $(infos).text(JSON.stringify(data[bdvName]));
-                });
-                
                 polygons[bdvName] = pol;
             });
             polygonsDefer.resolve(polygons);
-            console.log("Polygon keys", Object.keys(polygons));
+            //console.log("Polygon keys", Object.keys(polygons));
         });
         
         return polygonsDefer.promise();
     })();
     
+    
+    // DATA
+    dataP = (function(){
+        var dataDefer = new $.Deferred();
+        var data = Object.create(null); // TODO shim (+forEach, + map)
+        
+        var dataSources = {
+            "1997": './data/Législatives bordeaux 1997.csv',
+            "2002": './data/Législatives bordeaux 2002.csv',
+            "2004": './data/Législatives bordeaux 2004.csv',
+            "2007": './data/Législatives bordeaux 2007.csv'
+        };
+        
+        var dataDefers = Object.keys(dataSources).map(function(){return new $.Deferred();});
+        var dataPs = dataDefers.map(function(def){return def.promise();});
+        
+        Object.keys(dataSources).forEach(function(year, i){
+            var url = dataSources[year];
+        
+            var yearData = data[year] = Object.create(null);
+            
+            $.ajax({
+                url: url,
+                dataType: "text"
+            }).then(function(csvData){
+                console.log('CSV retrieved');
+                // parsing CSV
+                var lines = csvData.split('\n');
+                lines.forEach(function(l, i){
+                    lines[i] = lines[i].split(';');
+
+                    // removing freaking quote
+                    lines[i].forEach(function(e, j){
+                        lines[i][j] = e.unquote() || lines[i][j];
+                    });
+                });
+                
+                var firstLine = lines.shift();
+                //console.log("firstLine", firstLine);
+                
+                var dataArray = lines.map(function(l){
+                    var d = {};
+                    
+                    l.forEach(function(val, i){
+                        var key = firstLine[i];
+                        
+                        switch(key){
+                            case "Inscrits":
+                                val = parseInt(val);
+                                break;
+                            case "Abst %":
+                            case "Delaunay (PS)":
+                            case "Juppé (UMP)":
+                                val = parseFloat(val);
+                                break;
+                        }
+                    
+                        d[key] = val;
+                    });
+                    
+                    return d;
+                });
+                
+                dataArray.forEach(function(e, i){
+                    var key = e.Nom;
+                    if(!key || key === 'Total')
+                        return;
+
+                    yearData[key] = e;
+                });
+
+                dataDefers[i].resolve();
+            });
+        });
+    
+        $.when(dataPs).then(function(){
+            dataDefer.resolve(data);
+        })
+    
+        return dataDefer.promise();
+    })();
+    
+    
     $.when(geomapP, polygonsP).then(function(geomap, polygons){
         Object.keys(polygons).forEach(function(bdv){
             var pol = polygons[bdv];
-            
-            dataP.then(function(data){
-                var d = data[bdv];
-                if(d){
-                    pol.setOptions({
-                        fillColor: d["Delaunay (PS)"] < d["Juppé (UMP)"] ? 'blue' : 'red'
-                    });
-                }
-                else{
-                    console.log(bdv);
-                }
-            });
-        
             pol.setMap(geomap);
         });
     });
-    
-    var dataP = (function(){
-        var dataDefer = new $.Deferred();
-        
-        var csvDataP = $.ajax({
-            url:'./Législatives bordeaux 2007.csv',
-            dataType: "text"
-        }).then(function(csvData){
-            console.log('CSV retrieved');
-            // parsing CSV
-            var lines = csvData.split('\n');
-            lines.forEach(function(l, i){
-                lines[i] = lines[i].split(';');
-
-                // removing freaking quote
-                lines[i].forEach(function(e, j){
-                    lines[i][j] = e.unquote() || lines[i][j];
-                });
-            });
-            
-            var firstLine = lines.shift();
-            //console.log("firstLine", firstLine);
-            
-            var dataArray = lines.map(function(l){
-                var d = {};
-                
-                l.forEach(function(val, i){
-                    var key = firstLine[i];
-                    
-                    switch(key){
-                        case "Inscrits":
-                            val = parseInt(val);
-                            break;
-                        case "Abst %":
-                        case "Delaunay (PS)":
-                        case "Juppé (UMP)":
-                            val = parseFloat(val);
-                            break;
-                    }
-                
-                    d[key] = val;
-                });
-                
-                return d;
-            });
-            
-            dataArray.forEach(function(e, i){
-                var key = e.Nom;
-                if(!key || key === 'Total')
-                    return;
-
-                data[key] = e;
-            });
-
-            dataDefer.resolve(data);
-            console.log("data keys", Object.keys(data));
-        });
-    
-        return dataDefer.promise();
-    })()
-    
     
     
 })();
