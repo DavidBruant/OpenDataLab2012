@@ -195,8 +195,8 @@ TODO:
     function changeYear(year){
         console.log('Changing year to', year);
         currentYear = year;
+        refreshInfos(); // refresh infos first as the map may take longer to refresh
         displayCurrentYearMap();
-        refreshInfos();
     }
 
 
