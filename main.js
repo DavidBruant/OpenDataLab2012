@@ -1,11 +1,9 @@
 /*
 TODO:
-* Intégration des données 
-* changer la bordure du BDV selectionné
-* Séparation visuelle des scores
-* Inscrits + abstention
 * Comparatif entre l'année courante et les autres années (en bas à droite)
 * Page d'accueil
+* Intégration des données 
+
 * Camenbert (batons)
 
 */
@@ -34,7 +32,7 @@ TODO:
 
     global.bdvColor = function(winningSide, percentage){
         // HSL are far easier to figure out for color scales
-        var H = winningSide === 'droite' ? 249 : 352 ;
+        var H = winningSide === 'droite' ? 225 : 356 ;
         var S = 0.9;
         var L = (150 - percentage - 25)/100; 
         
@@ -129,10 +127,12 @@ TODO:
             
             //console.log('currentData', currentData);
             
+            $('#context').text(currentBdv === null ? 'Résultat complet' : 'Bureau de vote');
+            
             var rightScore = currentData[rightCandidate];
             var leftScore = currentData[leftCandidate];
         
-            $('#bureau').text(currentBdv);
+            $('#bureau').text(currentBdv === null ? 'Ville de Bordeaux' : currentBdv);
             
             $('#bureau').removeClass('right')
                         .removeClass('left')
@@ -183,13 +183,10 @@ TODO:
     function changeBdv(newBdv){
         var oldBdv = currentBdv;
         
-        
         if(newBdv !== oldBdv){
-            //console.log('Changing bdv to', bdvName);
+            console.log('Changing bdv to', newBdv);
 
             polygonsP.then(function(polygons){
-                console.log('yo');
-            
                 if(oldBdv !== null){
                     polygons[oldBdv].setOptions({
                         strokeColor : 'black',
@@ -198,14 +195,14 @@ TODO:
                     });
                 }
                 
-                polygons[newBdv].setOptions({
-                    strokeColor : '#FFD700',
-                    strokeWeight: 4,
-                    zIndex: 2
-                })
-                
+                if(newBdv !== null){
+                    polygons[newBdv].setOptions({
+                        strokeColor : '#FFD700',
+                        strokeWeight: 4,
+                        zIndex: 2
+                    });
+                }
             });
-
 
             currentBdv = newBdv;
             refreshInfos();
@@ -248,7 +245,7 @@ TODO:
         
         var result = {
             'Inscrits' : totalRegistered,
-            'Abst %' : totalAbstentionists,
+            'Abst %' : Math.round(10000*totalAbstentionists/totalRegistered)/100,
             totalBlankVotes : totalBlankVotes
         };
                 
@@ -265,8 +262,6 @@ TODO:
     }
     
     
-
-
     $(function initialize() {
         var myOptions = {
             center: new google.maps.LatLng(44.84, -0.57), // Bordeaux
@@ -275,15 +270,27 @@ TODO:
         };
         
         var geomap = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        google.maps.event.addListener(geomap, 'click', function(){
+            changeBdv(null);
+        });
+        
         geomapDefer.resolve(geomap);
         
-        $('button.year').click(function(e){
-            changeYear($(e.target).attr('data-year'));
+        $('.year').click(function(e){
+            var target = $(e.target);
+            var oldYear = currentYear;
+            
+            changeYear(target.attr('data-year'));
+            if(oldYear){
+                $('.year[data-year="'+oldYear+'"]').css('border-color', 'black');
+            }
+            
+            target.css('border-color', '#FFD700');
         });
         
         // Init
         currentBdv = null;
-        changeYear(2007);
+        $('.year[data-year="2007"]').click();//changeYear(2007);
     });
     
     // POLYGONS
@@ -322,8 +329,6 @@ TODO:
                 
                 google.maps.event.addListener(pol, 'click', function(){
                     changeBdv(bdvName);
-                
-                    
                 });
                 
                 polygons[bdvName] = pol;

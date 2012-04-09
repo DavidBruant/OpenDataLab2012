@@ -45,11 +45,34 @@
         top: 0;
         left: 0;
     }
-    
-        #years button {
-            padding: 10px;
-            margin: 10px;
+        #years > *{
+            display: inline-block;
+            height: 100%;
+            width: 24%;
+            text-align: center;
+            vertical-align: middle;
+            
+            padding: 10px 0;
         }
+        
+        .year{
+            display: inline-block;
+            padding: 20px;
+            /*height: 50%;
+            max-height: 60px;*/
+            
+            
+            background-color: white;
+            border-radius: 10px;
+            border: 2px dashed black;
+            cursor: pointer;
+            
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+            
+    
+        
     
     #credits{
         background-color: #DDD;
@@ -69,6 +92,11 @@
             padding: 0.5em;
             width: 100%;
             background-color: #CCC;
+            position: relative;
+        }
+        
+        #currentResult{
+            height: 65%;
         }
         
         #comparison{
@@ -76,6 +104,23 @@
             
             min-height: 50px;
             bottom:0;
+            height: 30%;
+        }
+        
+        #bureauInfos{
+            position: relative;
+        }
+        
+        #otherInfos{
+            position: absolute;
+            bottom: 0;
+            text-transform: uppercase;
+            font-size: 0.7em;
+            padding-bottom: 0.5em;
+        }
+    
+        #reg, #abst{
+            font-weight: bold;
         }
         
         
@@ -83,9 +128,24 @@
         #currentYear{
             border-bottom: 1px solid black;
         }
-        #bdvTxt{
+        #context{
             border-bottom: 2px solid black;
         }
+        
+        #bureau{
+            padding: 10px;
+            margin: 5px 0;
+            color: white;
+            font-weight: bold;
+        }
+        
+            .left{
+                background-color: #E5212E;
+            }
+            .right{
+                background-color: #1292BB;
+            }
+            
         
         #leftRight{
             display: table;
@@ -130,6 +190,7 @@
     }
         #scores > *{    
             padding: 0.2em;
+            background-color: transparent;
         }
     
         #scores .left{
@@ -139,9 +200,7 @@
             color: #1292BB;
         }
     
-    #otherInfos{
-        bottom: 0;
-    }
+
     
     #map_canvas{
         width: 100%;
@@ -161,11 +220,12 @@
   </head>
   <body>
     <div id="years">
-        <button class="year" data-year=1997>1997</button>
-        <button class="year" data-year=2002>2002</button>
-        <button class="year" data-year=2004>2004</button>
-        <button class="year" data-year=2007>2007</button>
+        <div><button class="year" data-year=1997>1997</button></div>
+        <div><button class="year" data-year=2002>2002</button></div>
+        <div><button class="year" data-year=2004>2004</button></div>
+        <div><button class="year" data-year=2007>2007</button></div>
     </div>
+    
     <div id="credits">Blablabla. <a href="#">On a bien bossé</a>. On était plusieurs.</div>
 
     <div id="mapContainer"> <div id="map_canvas"></div> </div>
@@ -173,7 +233,8 @@
     <div id="infos">
         <div id="currentResult">
             <div id="currentYear"></div>
-            <div id="bdvTxt">Bureau de vote</div>
+            <div id="context"></div>
+            
             <div id="bureauInfos">
                 <div id="bureau"></div>
                 <div id="leftRight">
@@ -187,10 +248,10 @@
                 </div>
                 <div id="camenbert"></div>
 
-                <div id="otherInfos">
-                    <span>inscrits: <span id="reg"></span></span>
-                    <span>abstention: <span id="abst" ></span></span>
-                </div>
+            </div>
+            <div id="otherInfos">
+                <span>Inscrits: <span id="reg"></span></span><br>
+                <span>Abstention: <span id="abst"></span></span>
             </div>
         </div>
         
