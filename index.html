@@ -4,16 +4,20 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style type="text/css">
-    *{margin: 0; padding: 0;}
+    *{
+        margin: 0;
+        padding: 0;
+       -moz-box-sizing:    border-box;
+       -webkit-box-sizing: border-box;
+        box-sizing:        border-box;
+    }
+    
     html, body { height: 100%; }
 
     body > *{
         position: fixed;
         margin: 0.3em;
         padding: 0.5em;
-       -moz-box-sizing:    border-box;
-       -webkit-box-sizing: border-box;
-        box-sizing:        border-box;
     }
     
     #mapContainer, #years{
@@ -34,7 +38,6 @@
         bottom: 0;
         left: 0;
         padding: 0;
-        
     }
     
     #years{
@@ -55,23 +58,28 @@
     }
     
     #infos{
-        background-color: #CCC;
         bottom: 0;
         right: 0;
+
+        padding:0;
     }
     
-        .left{
-            color: white;
-            background-color: red;
-        }
-        .right{
-            color: white;
-            background-color: blue;
-        }
     
         #infos > *{
+            padding: 0.5em;
             width: 100%;
+            background-color: #CCC;
         }
+        
+        #comparison{
+            margin-top: 5px;
+            
+            min-height: 50px;
+            bottom:0;
+        }
+        
+        
+        
         #currentYear{
             border-bottom: 1px solid black;
         }
@@ -81,8 +89,11 @@
         
         #leftRight{
             display: table;
-            border-collapse: collapse;
+            /*border-collapse: collapse;*/
+            border-spacing: 5px 0px;
             width: 100%;
+            
+            font-weight: bold;
         }
             #leftRight > *{
                 display: table-row;
@@ -93,10 +104,44 @@
                     box-sizing:        border-box;
                     display: table-cell;
                     width: 50%;
-                    padding: 0.3em;
                 }
         
+        #candidates .left, #candidates .right{
+            color: white;
+            background-size: contain;
+            background-color: transparent;
+            background-repeat: no-repeat;
+            height: 77px;
+            padding: 0.3em;
+            /*vertical-align: middle;*/
+
+        }
+        
+        #candidates .left{
+            background-image: url('./images/Gauche.png');
+        }
+        
+        #candidates .right{
+            background-image: url('./images/Droite.png');
+        }
+        
+    #scores{
+        text-align: center;
+    }
+        #scores > *{    
+            padding: 0.2em;
+        }
     
+        #scores .left{
+            color: #E5212E;
+        }
+        #scores .right{
+            color: #1292BB;
+        }
+    
+    #otherInfos{
+        bottom: 0;
+    }
     
     #map_canvas{
         width: 100%;
@@ -126,25 +171,33 @@
     <div id="mapContainer"> <div id="map_canvas"></div> </div>
 
     <div id="infos">
-        <div id="currentYear"></div>
-        <div id="bdvTxt">Bureau de vote</div>
-        <div id="bureauInfos">
-            <div id="bureau"></div>
-            <div id="leftRight">
-                <div id="candidates">
-                    <div class="left"></div>  <div class="right"></div>
+        <div id="currentResult">
+            <div id="currentYear"></div>
+            <div id="bdvTxt">Bureau de vote</div>
+            <div id="bureauInfos">
+                <div id="bureau"></div>
+                <div id="leftRight">
+                    <div id="candidates">
+                        <div class="left"></div>  <div class="right"></div>
+                    </div>
+                    <div id="scores">
+                        <div class="left"></div>  <div class="right"></div>
+                    </div>
+                    
                 </div>
-                <div id="scores">
-                    <div class="left"></div>  <div class="right"></div>
-                </div>
-                
-            </div>
-            <div id="camenbert"></div>
+                <div id="camenbert"></div>
 
-            <div id="otherInfos">
-            inscrits: XXX | abstention: XXX
+                <div id="otherInfos">
+                    <span>inscrits: <span id="reg"></span></span>
+                    <span>abstention: <span id="abst" ></span></span>
+                </div>
             </div>
         </div>
+        
+        <div id="comparison">
+        
+        </div>
+        
     </div>
   </body>
 </html>

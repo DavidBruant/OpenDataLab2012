@@ -1,3 +1,17 @@
+/*
+TODO: 
+* Score général quand aucun bureau n'est sélectionné
+* Intégration des données 
+* changer la bordure du BDV selectionné
+* Séparation visuelle des scores
+* Inscrits + abstention
+* Comparatif entre l'année courante et les autres années (en bas à droite)
+* Page d'accueil
+* Camenbert (batons)
+
+*/
+
+
 
 (function(){
     "use strict";
@@ -18,7 +32,6 @@
 
 
 (function(global){
-
 
     global.bdvColor = function(winningSide, percentage){
         // HSL are far easier to figure out for color scales
@@ -66,7 +79,6 @@
         return ret;
     };
     
-    
 })(this);
 
 
@@ -74,12 +86,17 @@
     "use strict";
     var SPACE = ' ';
     
-    var geomapDefer = new $.Deferred();
-    var geomapP = geomapDefer.promise(),
-        polygonsP,
-        dataP;
+    var geomapDefer = new $.Deferred(),
+        geomapP = geomapDefer.promise();
+    
+    var polygonsDefer = new $.Deferred(),
+        polygonsP = polygonsDefer.promise();    
 
-    var currentYear = 2007;
+    var dataDefer = new $.Deferred(),
+        dataP = dataDefer.promise();
+
+    var currentYear;
+    var currentBdv;
     
     var candidatesByYear = {
         "1997": {
@@ -99,8 +116,47 @@
             droite: "Juppé (UMP)"
         }
     }
+    
+    function refreshInfos(){
+        dataP.then(function(data){            
+            var leftCandidate = candidatesByYear[currentYear]['gauche'];
+            var rightCandidate = candidatesByYear[currentYear]['droite'];
 
-    function displayCurrentYear(){
+            var currentData;
+            
+            console.log('currentBdv', currentBdv);
+            
+            if(currentBdv === null){    
+                currentData = computeYearInfos(data[currentYear], currentYear);
+            }
+            else{
+                currentData = data[currentYear][currentBdv];
+            }
+            
+            console.log('currentData', currentData);
+            
+            var rightScore = currentData[rightCandidate];
+            var leftScore = currentData[leftCandidate];
+        
+            $('#bureau').text(currentBdv);
+            
+            $('#bureau').removeClass('right')
+                        .removeClass('left')
+                        .addClass(rightScore < leftScore ? 'left' : 'right');
+            
+            $('#candidates .left').text(leftCandidate);
+            $('#candidates .right').text(rightCandidate);
+            $('#scores .left').text(leftScore + ' %');
+            $('#scores .right').text(rightScore + ' %');
+            
+            $('#otherInfos #reg').text(currentData['Inscrits']);
+            $('#otherInfos #abst').text(currentData['Abst %'] + ' %');
+            
+        });
+    }
+    
+
+    function displayCurrentYearMap(){
         $.when(dataP, polygonsP).then(function(data, polygons){
             var yearData = data[currentYear];
             var candidates = candidatesByYear[currentYear];
@@ -126,13 +182,74 @@
                     console.warn('Bureau de vote inconnu', bdv);
                 }
             });
+            
         });
     }
+    
+    function changeBdv(bdvName){
+        console.log('Changing bdv to', bdvName);
+        currentBdv = bdvName;
+        refreshInfos();
+    }
+    
+    function changeYear(year){
+        console.log('Changing year to', year);
+        currentYear = year;
+        displayCurrentYearMap();
+        refreshInfos();
+    }
+
+
+    function computeYearInfos(yearData, year){
+        var leftCandidate = candidatesByYear[year]['gauche'];
+        var rightCandidate = candidatesByYear[year]['droite'];
+            
+        var totalRegistered = 0;
+        var totalAbstentionists = 0;
+        var totalRightVotes = 0;
+        var totalLeftVotes = 0;
+        var totalBlankVotes = 0;
+        
+        Object.keys(yearData).forEach(function(bdv){
+            var currentData = yearData[bdv];
+            
+            var registered = currentData['Inscrits'];
+            var abstentionists = registered*currentData['Abst %']/100; // keeping division approx
+            var voters = registered - abstentionists;
+            var blanks = currentData['Nuls'];
+            var nonBlankVoters = voters - blanks; 
+            
+            totalRegistered += registered;
+            totalAbstentionists += abstentionists;
+            totalRightVotes += nonBlankVoters*currentData[rightCandidate]/100;
+            totalLeftVotes += nonBlankVoters*currentData[leftCandidate]/100;
+            totalBlankVotes += blanks;
+        });
+        
+        var result = {
+            'Inscrits' : totalRegistered,
+            'Abst %' : totalAbstentionists,
+            totalBlankVotes : totalBlankVotes
+        };
+                
+        var leftCandidate = candidatesByYear[currentYear]['gauche'];
+        var rightCandidate = candidatesByYear[currentYear]['droite'];
+
+        var totalNonBlankVoters = totalRegistered - totalAbstentionists - totalBlankVotes;
+
+        result[leftCandidate] = Math.round(10000*Math.round(totalLeftVotes)/totalNonBlankVoters)/100;
+        result[rightCandidate] = Math.round(10000*Math.round(totalRightVotes)/totalNonBlankVoters)/100;
+        
+        
+        return result;
+    }
+    
+    
 
 
     $(function initialize() {
         var myOptions = {
-            center: new google.maps.LatLng(44.84, -0.57),
+            center: new google.maps.LatLng(44.84, -0.57), // Bordeaux
             zoom: 13,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
@@ -141,24 +258,20 @@
         geomapDefer.resolve(geomap);
         
         $('button.year').click(function(e){
-            currentYear = $(e.target).attr('data-year');
-            displayCurrentYear();
+            changeYear($(e.target).attr('data-year'));
         });
         
         // Init
-        displayCurrentYear();
+        currentBdv = null;
+        changeYear(2007);
     });
     
     // POLYGONS
-    polygonsP = (function KMLTreatment(){
-        var polygonsDefer = new $.Deferred();
-    
+    (function KMLTreatment(){
         var kmlP = $.get('./BDVBDX.kml').then(function(kml){
-            console.log("KML retrieved");
+            //console.log("KML retrieved");
             var polygons = Object.create(null);
-            
             var placemarks = $(kml).find('Folder Placemark');
-            
             var polPs = [];
             
             placemarks.each(function(i, e){
@@ -187,26 +300,9 @@
                 });
                 
                 google.maps.event.addListener(pol, 'click', function(){
-                    dataP.then(function(data){
-                        var currentData = data[currentYear][bdvName];
-                        var leftCandidate = candidatesByYear[currentYear]['gauche'];
-                        var rightCandidate = candidatesByYear[currentYear]['droite'];
-                        
-                        var rightScore = currentData[rightCandidate];
-                        var leftScore = currentData[leftCandidate];
-                        
-                        $('#bureau').text(bdvName);
-                        
-                        $('#bureau').removeClass('right')
-                                    .removeClass('left')
-                                    .addClass(rightScore < leftScore ? 'left' : 'right');
-                        
-                        $('#candidates .left').text(leftCandidate);
-                        $('#candidates .right').text(rightCandidate);
-                        $('#scores .left').text(leftScore);
-                        $('#scores .right').text(rightScore);
-                        
-                    });
+                    changeBdv(bdvName);
+                
+                    
                 });
                 
                 polygons[bdvName] = pol;
@@ -214,14 +310,11 @@
             polygonsDefer.resolve(polygons);
             //console.log("Polygon keys", Object.keys(polygons));
         });
-        
-        return polygonsDefer.promise();
     })();
     
     
     // DATA
-    dataP = (function(){
-        var dataDefer = new $.Deferred();
+    (function(){
         var data = Object.create(null); // TODO shim (+forEach, + map)
         
         var dataSources = {
@@ -243,7 +336,7 @@
                 url: url,
                 dataType: "text"
             }).then(function(csvData){
-                console.log('CSV retrieved');
+                //console.log('CSV retrieved');
                 // parsing CSV
                 var lines = csvData.split('\n');
                 lines.forEach(function(l, i){
@@ -266,6 +359,7 @@
                         
                         switch(key){
                             case "Inscrits":
+                            case "Nuls":
                                 val = parseInt(val);
                                 break;
                             case "Abst %":
@@ -297,7 +391,6 @@
             dataDefer.resolve(data);
         })
     
-        return dataDefer.promise();
     })();
     
     
