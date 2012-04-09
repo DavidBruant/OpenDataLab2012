@@ -115,6 +115,7 @@ TODO:
     }
     
     function refreshInfos(){
+    
         dataP.then(function(data){
             console.log('data are ready, refresh', data);
             var leftCandidate = candidatesByYear[currentYear]['gauche'];
@@ -156,11 +157,9 @@ TODO:
             var yearData = data[currentYear];
             var candidates = candidatesByYear[currentYear];
             
-            //console.log("yearData", yearData);
+            console.log("yearData", yearData);
 
             $("#currentYear").text(currentYear);
-            // TODO: change this into something less brutal
-            //$('#bureauInfos').text('');
             
             Object.keys(polygons).forEach(function(bdv){
                 var pol = polygons[bdv];
@@ -292,6 +291,7 @@ TODO:
         // Init
         currentBdv = null;
         $('.year[data-year="2007"]').click();
+        
     });
     
     // POLYGONS
@@ -354,7 +354,7 @@ TODO:
         var dataDefers = Object.keys(dataSources).map(function(){return new $.Deferred();});
         var dataPs = dataDefers.map(function(def){return def.promise();});
         
-        $.when(dataPs).then(function(){
+        $.when.apply(undefined, dataPs).then(function(){
             console.log('all dataPs', data);
             dataDefer.resolve(data);
         });
