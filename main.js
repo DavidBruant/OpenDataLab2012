@@ -1,6 +1,5 @@
 /*
-TODO: 
-* Score général quand aucun bureau n'est sélectionné
+TODO:
 * Intégration des données 
 * changer la bordure du BDV selectionné
 * Séparation visuelle des scores
@@ -122,18 +121,13 @@ TODO:
             var leftCandidate = candidatesByYear[currentYear]['gauche'];
             var rightCandidate = candidatesByYear[currentYear]['droite'];
 
-            var currentData;
+            var currentData = currentBdv === null ?
+                computeYearInfos(data[currentYear], currentYear) :
+                data[currentYear][currentBdv];
             
-            console.log('currentBdv', currentBdv);
+            //console.log('currentBdv', currentBdv);
             
-            if(currentBdv === null){    
-                currentData = computeYearInfos(data[currentYear], currentYear);
-            }
-            else{
-                currentData = data[currentYear][currentBdv];
-            }
-            
-            console.log('currentData', currentData);
+            //console.log('currentData', currentData);
             
             var rightScore = currentData[rightCandidate];
             var leftScore = currentData[leftCandidate];
@@ -186,10 +180,36 @@ TODO:
         });
     }
     
-    function changeBdv(bdvName){
-        console.log('Changing bdv to', bdvName);
-        currentBdv = bdvName;
-        refreshInfos();
+    function changeBdv(newBdv){
+        var oldBdv = currentBdv;
+        
+        
+        if(newBdv !== oldBdv){
+            //console.log('Changing bdv to', bdvName);
+
+            polygonsP.then(function(polygons){
+                console.log('yo');
+            
+                if(oldBdv !== null){
+                    polygons[oldBdv].setOptions({
+                        strokeColor : 'black',
+                        strokeWeight: 1,
+                        zIndex: 1
+                    });
+                }
+                
+                polygons[newBdv].setOptions({
+                    strokeColor : '#FFD700',
+                    strokeWeight: 4,
+                    zIndex: 2
+                })
+                
+            });
+
+
+            currentBdv = newBdv;
+            refreshInfos();
+        }
     }
     
     function changeYear(year){
@@ -296,7 +316,8 @@ TODO:
                     fillColor: 'white',
 
                     strokeColor : 'black',
-                    strokeWeight: 1
+                    strokeWeight: 1,
+                    zIndex: 1
                 });
                 
                 google.maps.event.addListener(pol, 'click', function(){
