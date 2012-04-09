@@ -290,7 +290,7 @@ TODO:
         
         // Init
         currentBdv = null;
-        $('.year[data-year="2007"]').click();//changeYear(2007);
+        $('.year[data-year="2007"]').click();
     });
     
     // POLYGONS
@@ -353,6 +353,8 @@ TODO:
         var dataDefers = Object.keys(dataSources).map(function(){return new $.Deferred();});
         var dataPs = dataDefers.map(function(def){return def.promise();});
         
+        console.log(dataPs.length);
+        
         Object.keys(dataSources).forEach(function(year, i){
             var url = dataSources[year];
         
@@ -362,7 +364,7 @@ TODO:
                 url: url,
                 dataType: "text"
             }).then(function(csvData){
-                //console.log('CSV retrieved');
+                console.log('CSV retrieved');
                 // parsing CSV
                 var lines = csvData.split('\n');
                 lines.forEach(function(l, i){
@@ -415,7 +417,7 @@ TODO:
     
         $.when(dataPs).then(function(){
             dataDefer.resolve(data);
-        })
+        });
     
     })();
     
