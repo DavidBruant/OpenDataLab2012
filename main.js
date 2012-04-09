@@ -115,7 +115,8 @@ TODO:
     }
     
     function refreshInfos(){
-        dataP.then(function(data){            
+        dataP.then(function(data){
+            console.log('data are ready, refresh', data);
             var leftCandidate = candidatesByYear[currentYear]['gauche'];
             var rightCandidate = candidatesByYear[currentYear]['droite'];
 
@@ -210,7 +211,7 @@ TODO:
     }
     
     function changeYear(year){
-        console.log('Changing year to', year);
+        //console.log('Changing year to', year);
         currentYear = year;
         refreshInfos(); // refresh infos first as the map may take longer to refresh
         displayCurrentYearMap();
@@ -353,7 +354,12 @@ TODO:
         var dataDefers = Object.keys(dataSources).map(function(){return new $.Deferred();});
         var dataPs = dataDefers.map(function(def){return def.promise();});
         
-        console.log(dataPs.length);
+        $.when(dataPs).then(function(){
+            console.log('all dataPs', data);
+            dataDefer.resolve(data);
+        });
+        
+        //console.log(dataPs.length);
         
         Object.keys(dataSources).forEach(function(year, i){
             var url = dataSources[year];
@@ -415,10 +421,7 @@ TODO:
             });
         });
     
-        $.when(dataPs).then(function(){
-            console.log('all dataPs', data);
-            dataDefer.resolve(data);
-        });
+
     
     })();
     
