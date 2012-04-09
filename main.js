@@ -416,6 +416,7 @@ TODO:
         });
     
         $.when(dataPs).then(function(){
+            console.log('all dataPs', data);
             dataDefer.resolve(data);
         });
     
