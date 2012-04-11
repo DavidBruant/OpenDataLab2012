@@ -115,9 +115,7 @@ TODO:
     }
     
     function refreshInfos(){
-    
         dataP.then(function(data){
-            console.log('data are ready, refresh', data);
             var leftCandidate = candidatesByYear[currentYear]['gauche'];
             var rightCandidate = candidatesByYear[currentYear]['droite'];
 
@@ -134,7 +132,7 @@ TODO:
             var rightScore = currentData[rightCandidate];
             var leftScore = currentData[leftCandidate];
         
-            $('#bureau').text(currentBdv === null ? 'Ville de Bordeaux' : currentBdv);
+            $('#bureau').text(currentBdv === null ? 'Deuxième circonscription de Bordeaux' : currentBdv);
             
             $('#bureau').removeClass('right')
                         .removeClass('left')
@@ -145,19 +143,120 @@ TODO:
             $('#scores .left').text(leftScore + ' %');
             $('#scores .right').text(rightScore + ' %');
             
-            $('#otherInfos #reg').text(currentData['Inscrits']);
-            $('#otherInfos #abst').text(currentData['Abst %'] + ' %');
+            $('#currentResult .otherInfos .reg').text(currentData['Inscrits']);
+            $('#currentResult .otherInfos .abst').text(currentData['Abst %'] + ' %');
             
         });
     }
     
+    var currentlyComparingWith = '1997';
+    
+    // When either bureau or year changes
+    function refreshComparisonData(){
+        dataP.then(function(data){
+            var before, after;
+            if(Number(currentYear) < Number(currentlyComparingWith)){
+                 before = currentYear;
+                 after = currentlyComparingWith;
+            }
+            else{
+                 before = currentlyComparingWith;
+                 after = currentYear;
+            }
+            
+            console.log(before, after);
+            
+            var beforeData, afterData;
+            if(currentBdv === null){
+                // full data;
+                beforeData = computeYearInfos(data[before], before);
+                afterData = computeYearInfos(data[after], after);
+                console.log('beforeData', beforeData);
+                console.log('afterData', afterData);
+            }
+            else{
+                beforeData = data[before][currentBdv];
+                afterData = data[after][currentBdv];
+            }
+            
+            var beforeLeftCandidate = candidatesByYear[before]['gauche'];
+            var afterLeftCandidate = candidatesByYear[after]['gauche']; 
+
+            console.log(beforeLeftCandidate, afterLeftCandidate);
+            console.log(afterData[afterLeftCandidate], beforeData[beforeLeftCandidate]);
+
+            var deltaLeft = Math.round(100*(afterData[afterLeftCandidate] - beforeData[beforeLeftCandidate]))/100;
+            $('#progression .arrow')
+                .removeClass('left')
+                .removeClass('right')
+                .text('+'+(deltaLeft < 0 ? -deltaLeft : deltaLeft) +'%')
+                .addClass(deltaLeft > 0 ? 'left' : 'right');
+
+            var deltaReg = afterData['Inscrits'] - beforeData['Inscrits'];
+            $('#comparison .otherInfos .reg').text(deltaReg > 0 ? '+'+deltaReg : deltaReg);
+            
+            console.log(afterData['Abst %'], beforeData['Abst %']);
+            var deltaAbst = Math.round(100*(afterData['Abst %'] - beforeData['Abst %']))/100;
+            $('#comparison .otherInfos .abst').text( (deltaAbst > 0 ? '+'+deltaAbst : deltaAbst)+'%');
+
+        
+        });
+    }
+    
+    var refreshComparison = (function(){
+        var years = Object.keys(candidatesByYear);
+        var elementsPerYear;
+     
+        $(function(){
+            $('#yearChoice .choice').each(function(i, e){
+                $(e).click(function(){
+                    currentlyComparingWith = $(e).text();
+                    refreshComparison();
+                });
+            });
+        });
+        
+        return function refreshComparison(){
+            // update year choices to be all but the currentYear
+            elementsPerYear = {};
+            
+            $('#yearChoice .choice').each(function(i, e){
+                var y = Number(years[i]) >= Number(currentYear) ? years[i+1] : years[i];
+                $(e).text(y);
+                elementsPerYear[y] = e;
+            });
+            
+            if(currentlyComparingWith === currentYear){
+                currentlyComparingWith = (currentlyComparingWith === '1997') ? '2007' : '1997';
+            }
+
+            $('#yearChoice .choice').removeClass('chosenYear');
+            $(elementsPerYear[currentlyComparingWith]).addClass('chosenYear');
+            
+            var min, max;
+            if(Number(currentYear) < Number(currentlyComparingWith)){
+                 min = currentYear;
+                 max = currentlyComparingWith;
+            }
+            else{
+                 min = currentlyComparingWith;
+                 max = currentYear;
+            }
+            
+            $('#progression .from').text(min);
+            $('#progression .to').text(max);
+            
+            refreshComparisonData();
+        };
+        
+    })();
 
     function displayCurrentYearMap(){
         $.when(dataP, polygonsP).then(function(data, polygons){
             var yearData = data[currentYear];
             var candidates = candidatesByYear[currentYear];
             
-            console.log("yearData", yearData);
+            //console.log("yearData", yearData);
 
             $("#currentYear").text(currentYear);
             
@@ -206,6 +305,7 @@ TODO:
 
             currentBdv = newBdv;
             refreshInfos();
+            refreshComparisonData();
         }
     }
     
@@ -214,6 +314,7 @@ TODO:
         currentYear = year;
         refreshInfos(); // refresh infos first as the map may take longer to refresh
         displayCurrentYearMap();
+        refreshComparison();
     }
 
 
@@ -249,14 +350,13 @@ TODO:
             totalBlankVotes : totalBlankVotes
         };
                 
-        var leftCandidate = candidatesByYear[currentYear]['gauche'];
-        var rightCandidate = candidatesByYear[currentYear]['droite'];
+        var leftCandidate = candidatesByYear[year]['gauche'];
+        var rightCandidate = candidatesByYear[year]['droite'];
 
         var totalNonBlankVoters = totalRegistered - totalAbstentionists - totalBlankVotes;
 
         result[leftCandidate] = Math.round(10000*Math.round(totalLeftVotes)/totalNonBlankVoters)/100;
         result[rightCandidate] = Math.round(10000*Math.round(totalRightVotes)/totalNonBlankVoters)/100;
-        
         
         return result;
     }
@@ -291,6 +391,8 @@ TODO:
         // Init
         currentBdv = null;
         $('.year[data-year="2007"]').click();
+        
+        
         
     });
     
@@ -329,7 +431,10 @@ TODO:
                 });
                 
                 google.maps.event.addListener(pol, 'click', function(){
-                    changeBdv(bdvName);
+                    if(currentBdv === bdvName)
+                        changeBdv(null);
+                    else
+                        changeBdv(bdvName);
                 });
                 
                 polygons[bdvName] = pol;
@@ -355,7 +460,7 @@ TODO:
         var dataPs = dataDefers.map(function(def){return def.promise();});
         
         $.when.apply(undefined, dataPs).then(function(){
-            console.log('all dataPs', data);
+            //console.log('all dataPs', data);
             dataDefer.resolve(data);
         });
         
@@ -370,7 +475,7 @@ TODO:
                 url: url,
                 dataType: "text"
             }).then(function(csvData){
-                console.log('CSV retrieved');
+                //console.log('CSV retrieved');
                 // parsing CSV
                 var lines = csvData.split('\n');
                 lines.forEach(function(l, i){
@@ -421,9 +526,11 @@ TODO:
             });
         });
     
-
-    
     })();
+    
+    
+    // Comparison
+    
     
     
     $.when(geomapP, polygonsP).then(function(geomap, polygons){

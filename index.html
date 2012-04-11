@@ -97,10 +97,14 @@
         
         #currentResult{
             height: 65%;
+            top: 0;
+            position: absolute;
+            
         }
         
         #comparison{
-            margin-top: 5px;
+            bottom: 0;
+            position: absolute;
             
             min-height: 50px;
             bottom:0;
@@ -111,7 +115,7 @@
             position: relative;
         }
         
-        #otherInfos{
+        .otherInfos{
             position: absolute;
             bottom: 0;
             text-transform: uppercase;
@@ -119,7 +123,7 @@
             padding-bottom: 0.5em;
         }
     
-        #reg, #abst{
+        .reg, .abst{
             font-weight: bold;
         }
         
@@ -200,6 +204,48 @@
             color: #1292BB;
         }
     
+    #progression, #yearChoice{
+        display:table-row;
+    }
+    
+    #yearChoice{
+        font-weight: bold;
+    
+    }
+    
+        #progression > *, #yearChoice > *{
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0.3em 0;
+        }
+        
+        #yearChoice > *{
+            width: 20%;
+        }
+        
+        #progression .arrow{
+            background-color:transparent;
+            background-repeat: no-repeat;
+            background-position: center center;
+            width: 80%;
+            height: 35px;
+            color: white;
+            font-weight: bold;
+        }    
+        #progression .arrow.left{
+            background-image: url('./images/fleche_rouge.png');
+        }
+        #progression .arrow.right{
+            background-image: url('./images/fleche_bleue.png');
+            
+        }
+
+    .chosenYear{
+        color: #F15A24;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
 
     
     #map_canvas{
@@ -219,6 +265,14 @@
     <title>Open data lab - Législatives 2ème circonscription Bordeaux</title>
   </head>
   <body>
+  
+    <!-- div id=welcome>
+    
+    
+    
+    </div -->
+  
+  
     <div id="years">
         <div><button class="year" data-year=1997>1997</button></div>
         <div><button class="year" data-year=2002>2002</button></div>
@@ -226,13 +280,14 @@
         <div><button class="year" data-year=2007>2007</button></div>
     </div>
     
-    <div id="credits">Blablabla. <a href="#">On a bien bossé</a>. On était plusieurs.</div>
+    <div id="credits"><img width="100" style='float:left; margin-right:10px;' src="./images/Logo-creative-commons-by-sa.jpg">
+    Data-visualisation effectuée par: David Bruant, Martin Caro, Pierre Garrat, Anthony Jolly et Maxence Kagni. <a style="color:red">Sources de données</a></div>
 
     <div id="mapContainer"> <div id="map_canvas"></div> </div>
 
     <div id="infos">
         <div id="currentResult">
-            <div id="currentYear"></div>
+            <div id="currentYear" class="chosenYear"></div>
             <div id="context"></div>
             
             <div id="bureauInfos">
@@ -249,14 +304,32 @@
                 <div id="camenbert"></div>
 
             </div>
-            <div id="otherInfos">
-                <span>Inscrits: <span id="reg"></span></span><br>
-                <span>Abstention: <span id="abst"></span></span>
+            <div class="otherInfos">
+                <span>Inscrits <span class="reg"></span></span><br>
+                <span>Abstention <span class="abst"></span></span>
             </div>
         </div>
         
         <div id="comparison">
+            <div><!-- wrapping div just so that #yearChoice and #progression have a different parent-->
+                <div id="yearChoice">
+                    <span>Comparatif</span>
+                    <span class=choice></span>
+                    <span class=choice></span>
+                    <span class=choice></span>
+                </div>
+            </div>
+            
+            <div id=progression>
+                <span class="from chosenYear"></span>
+                <span class=arrow></span>
+                <span class="to chosenYear"></span>
+            </div>
         
+            <div class="otherInfos">
+                <span class="delta">Inscrits <span class="reg"></span></span><br>
+                <span class="delta">Abstention <span class="abst"></span></span>
+            </div>
         </div>
         
     </div>
