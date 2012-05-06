@@ -3,261 +3,8 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <style type="text/css">
-    *{
-        margin: 0;
-        padding: 0;
-       -moz-box-sizing:    border-box;
-       -webkit-box-sizing: border-box;
-        box-sizing:        border-box;
-    }
+    <link rel="stylesheet" href="main.css">
     
-    html, body { height: 100%; }
-
-    body > *{
-        position: fixed;
-        margin: 0.3em;
-        padding: 0.5em;
-    }
-    
-    #mapContainer, #years{
-        width: 69%;
-    }
-    #credits, #infos{
-        width: 29%;
-    }
-    #mapContainer, #infos {
-        height: 78%;
-    }
-    #years, #credits {
-        height: 18%;
-    }
-    
-    
-    #mapContainer{
-        bottom: 0;
-        left: 0;
-        padding: 0;
-    }
-    
-    #years{
-        background-color: #EEE;
-        top: 0;
-        left: 0;
-    }
-        #years > *{
-            display: inline-block;
-            height: 100%;
-            width: 24%;
-            text-align: center;
-            vertical-align: middle;
-            
-            padding: 10px 0;
-        }
-        
-        .year{
-            display: inline-block;
-            padding: 20px;
-            /*height: 50%;
-            max-height: 60px;*/
-            
-            
-            background-color: white;
-            border-radius: 10px;
-            border: 2px dashed black;
-            cursor: pointer;
-            
-            font-weight: bold;
-            font-size: 1.5em;
-        }
-            
-    
-        
-    
-    #credits{
-        background-color: #DDD;
-        top: 0;
-        right: 0;
-    }
-    
-    #infos{
-        bottom: 0;
-        right: 0;
-
-        padding:0;
-    }
-    
-    
-        #infos > *{
-            padding: 0.5em;
-            width: 100%;
-            background-color: #CCC;
-            position: relative;
-        }
-        
-        #currentResult{
-            height: 65%;
-            top: 0;
-            position: absolute;
-            
-        }
-        
-        #comparison{
-            bottom: 0;
-            position: absolute;
-            
-            min-height: 50px;
-            bottom:0;
-            height: 30%;
-        }
-        
-        #bureauInfos{
-            position: relative;
-        }
-        
-        .otherInfos{
-            position: absolute;
-            bottom: 0;
-            text-transform: uppercase;
-            font-size: 0.7em;
-            padding-bottom: 0.5em;
-        }
-    
-        .reg, .abst{
-            font-weight: bold;
-        }
-        
-        
-        
-        #currentYear{
-            border-bottom: 1px solid black;
-        }
-        #context{
-            border-bottom: 2px solid black;
-        }
-        
-        #bureau{
-            padding: 10px;
-            margin: 5px 0;
-            color: white;
-            font-weight: bold;
-        }
-        
-            .left{
-                background-color: #E5212E;
-            }
-            .right{
-                background-color: #1292BB;
-            }
-            
-        
-        #leftRight{
-            display: table;
-            /*border-collapse: collapse;*/
-            border-spacing: 5px 0px;
-            width: 100%;
-            
-            font-weight: bold;
-        }
-            #leftRight > *{
-                display: table-row;
-            }
-                #leftRight > * > *{
-                   -moz-box-sizing:    border-box;
-                   -webkit-box-sizing: border-box;
-                    box-sizing:        border-box;
-                    display: table-cell;
-                    width: 50%;
-                }
-        
-        #candidates .left, #candidates .right{
-            color: white;
-            background-size: contain;
-            background-color: transparent;
-            background-repeat: no-repeat;
-            height: 77px;
-            padding: 0.3em;
-            /*vertical-align: middle;*/
-
-        }
-        
-        #candidates .left{
-            background-image: url('./images/Gauche.png');
-        }
-        
-        #candidates .right{
-            background-image: url('./images/Droite.png');
-        }
-        
-    #scores{
-        text-align: center;
-    }
-        #scores > *{    
-            padding: 0.2em;
-            background-color: transparent;
-        }
-    
-        #scores .left{
-            color: #E5212E;
-        }
-        #scores .right{
-            color: #1292BB;
-        }
-    
-    #progression, #yearChoice{
-        display:table-row;
-    }
-    
-    #yearChoice{
-        font-weight: bold;
-    
-    }
-    
-        #progression > *, #yearChoice > *{
-            display: table-cell;
-            vertical-align: middle;
-            text-align: center;
-            padding: 0.3em 0;
-        }
-        
-        #yearChoice > *{
-            width: 20%;
-        }
-        
-        #progression .arrow{
-            background-color:transparent;
-            background-repeat: no-repeat;
-            background-position: center center;
-            width: 80%;
-            height: 35px;
-            color: white;
-            font-weight: bold;
-        }    
-        #progression .arrow.left{
-            background-image: url('./images/fleche_rouge.png');
-        }
-        #progression .arrow.right{
-            background-image: url('./images/fleche_bleue.png');
-            
-        }
-
-    .chosenYear{
-        color: #F15A24;
-        font-size: 1.2em;
-        font-weight: bold;
-    }
-
-    
-    #map_canvas{
-        width: 100%;
-        height: 100%;
-        /* Google Maps adds:
-        position:relative
-        */
-    }
-    </style>
-    
-
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAcwvPWwZKDsjt8fa0gAOTgwP0PvuizjgE&sensor=false"> </script>
     <script src="jquery.js"> </script>
     <script src="main.js"> </script>
@@ -333,6 +80,334 @@
             </div>
         </div>
         
+    </div>
+    
+    <div style="display:none;"><!--
+    Voici l'intégralité des textes des analyses pour la data visu. Le plus souvent, un texte correspond à plusieurs bureaux, comme tu va le voir. Il faudrait qu'à chaque fin de texte, tu ajoute un lien vers ce Google Doc (https://docs.google.com/spreadsheet/ccc?key=0Am13AwaVc2xNdEVwUlE2UGdhUjh6ajJrTzVjbGstamc#gid=0). Le tableau doit faciliter la compréhension des analyses.
+-->
+
+
+<div class="enquête">
+<h1>Palais des Sports - Musée d’Aquitaine (Paul Bert B) et Pasteur - Victoire (Henri IV A)</h1>
+
+<p>« Vous êtes sûrs que ce quartier vote à gauche ? » Ce sont les mots qui reviennent constamment dans la bouche des commerçants du quartier.
+
+<p>Et pourtant le secteur autour du cours Pasteur est la zone où la gauche a le plus progressé sur la période 1997-2002 : +13,5 points en dix ans sur le bureau Pasteur - Victoire, et + 17,8 points sur le bureau Palais des Sports - Musée d’Aquitaine ! Ils donnent respectivement 59 et 66 % au PS en 2007 alors qu’ils votaient à droite 10 ans avant.
+
+<p>Dès 2002, la zone a basculé à gauche, dans un contexte de “vague bleue” nationale, et le score du Parti socialiste au second tour est en constante progression depuis.
+
+<p>Philippe Christophe, directeur de l'espace social Réseau Paul Bert, a son explication. Même si lui aussi pense que le quartier vote à droite, il confie que « derrière les façades bourgeoises, se cache une grande précarité ». Philippe Cristophe affirme que contrairement aux apparences, la zone est très touchée par le chômage : « La précarité est aussi présente ici qu'à Floirac ou Lormont, mais pour des raisons politiques on n'en parle pas : le quartier est en plein centre-ville. De plus, il y a peu de logements sociaux, et beaucoup de baux privés avec des loyers élevés ».
+
+<p>Du côté des agences immobilières, on nuance cette dernière affirmation, en affirmant que les prix sont « ceux du marché » et en relevant que le quartier est très étudiant.
+
+<p>Ces facteurs pourraient expliquer la perte de voix d'Alain Juppé sur la zone. Hormis cela, la hausse du nombre d'inscrits est aussi un facteur qui a pu entraîner la défaite de l'édile bordelais. Entre 1997 et 2007, le bureau Palais des Sports - Musée d’Aquitaine a vu le nombre de ses inscrits sur les listes électorales passer de 1001 personnes à 1423, soit une hausse de près de 40 % (de 894 à 1070 sur le bureau Pasteur - Victoire).
+
+<p>Dernière explication possible : Alain Juppé aurait pâtit des travaux du tramway cours Pasteur au début des années 2000. Mais Matthieu Rouveyre, le conseiller général socialiste du 5ème canton, ne croît pas à un “vote-sanction”. Une intuition confirmée par les commerçants qui, même s’ils ont été gênés par ceux-ci, reconnaissent que les travaux ont eu un effet bénéfique pour la vie du secteur.
+
+<p>Par ailleurs, l’élu socialiste ajoute qu’il est difficile de se fier aux résultats du bureau Pasteur - Victoire. La forte présence d’étudiants dans le secteur provoque un impoprtant turn-over des habitants. “Quand on va faire du porte à porte dans le secteur, il est très fréquent que les personnes que l’on trouve ne soient déjà plus celles inscrites sur les listes électorales”.
+
+<p>Malgré nos tentatives nous n’avons pas réussi à contacter l’élu UMP Jean-Louis David.
+
+<span class="authors">Maxence Kagni et Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Montaigne-Leyteire (Menuts A), Maucaillou-Sauvageau (Menuts B) et Place Saint-Michel (Menuts C).</h1>
+
+<p>“Saint-Michel a toujours été à gauche”. Tel est le constat de Matthieu Rouveyre, conseiller général PS du 5ème canton.  En effet, sur la période 1997-2007, le représentant du Parti socialiste l'a toujours emporté dans le quartier aux élections législatives : il a gagné 10 points en moyenne sur les trois bureaux. La hausse a été continue : Michèle Delaunay réalisait même en 2007 le score exceptionnel de 81,59 % dans le bureau de Maucaillou-Sauvageau.
+
+<p>Il sera donc difficile pour elle de faire mieux que lors de la dernière élection législative. Cela le sera d'autant plus que Saint-Michel est en pleine rénovation : l'action, visible, du maire Alain Juppé pour le quartier pourrait lui attirer quelques sympathies.
+
+<p>Mais cela est à nuancer : les travaux suscitent la méfiance des habitants. “Les gens sont lucides, ils savent, même si les travaux étaient nécessaires, qu’ils sont condamnés à partir à moyen terme” prédit Matthieu Rouveyre.
+
+<p>« La population devient de plus en plus aisée » remarquent ainsi certains commerçants, qui redoutent qu'après les travaux les résidents disposant de peu de ressources soient chassés en raison de la hausse des prix. “Il y a seulement 7 % de logements sociaux dans le quartier” remarque par ailleurs Matthieu Rouveyre.
+
+<p>Les agences immobilières ne partagent pas cette méfiance généralisée envers une éventuelle «gentrification», qui aurait des conséquences électorales. Selon elles, Saint-Michel demeure un quartier très populaire, dans lequel les prix de l'immobilier restent assez bas. Matthieu Rouveyre concède d’ailleurs que si les travaux dans le quartier ont pour but “de virer la population en place”, ils ne feront pas basculer le quartier électoralement : “Les gens qui partent sont remplacés par des “bobos” qui votent à gauche”.  
+
+<p>La population du quartier est historiquement assez modeste : selon l'INSEE, 31 % de la population de Saint-Michel disposait d'un bas revenu en 2009, contre 7,3% dans le reste de l' unité urbaine de Bordeaux (un zonage de 51 communes autour de Bordeaux http://fr.wikipedia.org/wiki/Unit%C3%A9_urbaine_de_Bordeaux). Cette surreprésentation des « couches populaires » est donc particulièrement bénéfique au candidat de gauche.
+
+<p>Autre caractéristique du quartier : son fort taux d'abstention. « Ici, les gens ne votent pas » déplore le cordonnier de la place Canteloup. En hausse sur la période 1997-2007, l'abstention atteint presque 45 % en moyenne sur les trois bureaux de votes lors de la dernière élection législative. La population de Saint-Michel serait donc faiblement politisée. Cette tendance tend à baisser légèrement depuis l'élection de 2002 (exception faite de l’élection 2004, une partielle mobilisant traditionnellement moins les électeurs). Une baisse peut-être due à l’activisme des partis de gauche, qui savent que mobiliser l’électorat de Saint-Michel est payant.
+
+<p>Cette abstention assez élevée va de pair avec une hausse du nombre des d’inscrits. En 2007, le nombre des inscrits avait déjà progressé de 43 % dans Maucaillou-Sauvageau, soit 411 inscrits supplémentaires. En valeur absolue, c’est la troisième plus forte hausse des inscrits dans un bureau dans la circonscription. Dans le bureau Place Saint-Michel, l’augmentation est encore de 42 % (+287 inscrits) et de 32 % dans Montaigne-Leyteire (+238). Cette augmentation est due selon Matthieu Rouveyre au simple fait que les nouveaux arrivés, les “bobos”, remplacent dans les logements des habitants étrangers ou non-inscrits.
+
+<p>Alain Juppé a perdu à Saint-Michel en 2007. Il y perdra encore cette année.
+
+<span class="authors">Maxence Kagni et Anthony Jolly</span>
+</div>
+
+
+
+
+<div class="enquête">
+<h1>Mouneyra-Tondu (Alphonse Dupeux A), Tondu (Alphonse Dupeux B), Xaintrailles (Alphonse Dupeux C) et Leblanc (Alphonse Dupeux D).</h1>
+
+<p>Les quatre bureaux de vote Alphonse Dupeux, situés dans le secteur des rues du Tondu et de la rue Mouneyra, seront à n'en pas douter des endroits que les équipes de campagne d'Alain Juppé et de Michèle Delaunay scruteront avec attention lors des prochaines élections législatives. Le « quartier », situé en dessous du cimetière de la Chartreuse et à l'est du boulevard Leclerc, est clairement tangent depuis 1997 et, d’un scrutin à l’autre, les basculements à droite comme à gauche y sont légion.
+
+
+<p>En 1997, le maire de Bordeaux l'emporte avec une marge confortable dans les bureaux Mouneyra-Tondu et Tondu (respectivement 57,93 et 60,61 %) mais il perd pour quelques dizaines de voix dans le bureau Xaintrailles (49,74 %). En 2002, Alain Juppé rafle les quatre bureaux. Le bureau Tondu, situé en bordure de la caserne militaire Xaintrailles, vote même à 63 % pour l'édile bordelais. En 2004, lors de l'élection législative partielle, la tendance s'inverse. Les bureaux Xaintrailles et Leblanc tombent dans l'escarcelle de la socialiste Michèle Delaunay. Hugues Martin, le candidat UMP qui succède à Alain Juppé, perd entre 2 et 10 points sur l'ensemble des bureaux de vote du secteur. Enfin en 2007, Alain Juppé s’incline dans le bureau Mouneyra-Tondu devant sa rivale socialiste. Seul le bureau Tondu fait de la résistance mais les électeurs ne sont plus que 53 % à se prononcer en faveur du maire de Bordeaux. Une perte de dix points par rapport à 2002.
+
+
+<p>Présentée ainsi, la progression socialiste dans le quartier Alphonse Dupeux semble linéaire depuis 1997, et les chances de Michèle Delaunay de faire un très bon score aux législatives de juin paraissent importantes. Mais le raisonnement est un peu rapide. La députée socialiste ne l'a emporté en 2007 qu'à 50,5 % et 50,6 % dans Xaintrailles et Leblanc. Des victoires qui tiennent à quelques bulletins de vote, et qui doivent inciter à la mesure côté socialiste : en 2004, le PS avait fait de meilleurs scores.
+
+
+<p>Jamais complètement à droite, jamais complètement à gauche, le quartier Alphonse Dupeux se cherche électoralement. Comme l’affirme Annie Playe, pharmacienne installée boulevard du maréchal Leclerc depuis 9 ans, « la population a beaucoup changé ». Le quartier, habité en partie par une population relativement aisée, accueille de plus en plus de jeunes couples avec enfants, alors qu'il y a quelques années, « il y avait davantage de retraités ». Une observation que confirme l’analyse du nombre des inscrits. Xaintrailles et Leblanc sont dans le Top 10 des bureaux qui ont le plus gagné d’inscrits, sur toute la circonscription : respectivement +40 % et +27 % entre 1997 et 2007. Dans Mouneyra-Tondu, la hausse est dans la moyenne (+21 %) et le bureau Tondu est plus en retrait (+10 %).
+
+<p>Le rajeunissement de la population est une première amorce d'explication à ce basculement à gauche du secteur. « Le quartier reste quand même perçu comme plutôt à droite tempère Jean-François Hirigoyen, directeur de Guy Hôquet Immobilier, agence immobilière située rue du Tondu. « Le quartier est hétérogène : il y a des étudiants mais quand même pas mal de propriétaires. »
+
+
+<p>Depuis les dernières élections législatives de 2007, les commerçants observent que les élus se font rares dans le quartier. Ils auraient pourtant intérêt à se faire connaitre des nouveaux arrivants. Xaintrailles et Leblanc sont dans le Top 10 des bureaux qui ont le plus gagné d’inscrits, sur toute la circonscription : respectivement +40 % et +27 % entre 1997 et 2007. Dans Mouneyra-Tondu, la hausse est dans la moyenne (+21 %) et le bureau Tondu est plus en retrait (+10 %).
+
+
+<p>A l'approche du mois de juin, la donne pourrait bien changer : la secteur a tellement gagné d’inscrits qu’un cinquième bureau a été créé. De quoi attirer les convoitises.
+
+<span class="authors">Maxence Kagni et Anthony Jolly</span>
+</div>
+
+
+
+
+<div class="enquête">
+<h1>Capdeville (Albert Barraud A), Haut-Turenne (Albert Barraud B), Renan (Albert Barraud C), Sainte-Clotilde (Albert Barraud D), Croix-Blanche - Wilson (Albert Barraud E), Mandel (Albert Barraud F), Lycée Camille-Jullian (Albert Barraud G) et Saint-Seurin (Malleret B).</h1>
+
+<p>C'est incontestablement LE bastion d'Alain Juppé. Si le quartier Saint-Michel est une citadelle imprenable en 2012 pour le maire de Bordeaux, le secteur Saint-Seurin restera sans l'ombre d'un doute largement acquis à la droite, comme il l'était déjà au temps de Jacques Chaban-Delmas. Quartier largement prisé par une population urbaine, bourgeoise et familiale, Saint-Seurin ne lui a jamais fait faux bond.
+
+<p>Depuis 1997 et la première élection d'Alain Juppé dans la deuxième circonscription, Saint-Seurin est le secteur où l'élu obtient ses meilleurs scores. En 1997, il totalise près de 68 % des suffrages. Dix ans plus tard, le pourcentage reste très flatteur, malgré une érosion de 4 points (64 %). « Les gens cherchent la tranquillité et la proximité des commerces » nous explique-t-on à Logic Immo, rue Capdeville. « La population qui y vit est relativement aisée. »
+
+<p>Dans ce ciel bleu UMP, on aperçoit toutefois un nuage rose : les électeurs des bureaux Saint-Seurin (Malleret B) et Haut-Turenne (Albert Barraud B) apparaissent au fil du temps de plus en plus frondeurs. Dans le bureau Saint-Seurin, dessiné à l'ouest par la rue Capdeville et à l'est par la rue du Palais Gallien, la droite a perdu 11 points en dix ans. Ce secteur est l'un des rares lieux de vie du quartier. L'association des commerçants de la rue Judaïque et du quartier Saint-Seurin y organise de nombreuses activités autour de la place des Martyrs de la Résistance.
+
+<p>Le vote UMP se tasse également dans le bureau Haut-Turenne (Albert Barraud B). Alain Juppé y perd 10 points entre 1997 et 2007 alors qu'il était déjà le bureau le moins à droite dans le quartier (avec tout de même 62,34 %). Vainqueur avec 52,41 %, le maire de Bordeaux peut craindre un basculement à gauche, si la tendance se maintient. Ce serait historique.
+
+<p>Le nombre d'inscrits augmente dans le secteur mais plus faiblement que dans le reste de la circonscription : 14 % contre 20 % en moyenne. Deux explications peuvent être avancées : le quartier étant relativement dense, il est difficile d'y construire de nouveaux logements ; la population étant assez âgée et majoritairement propriétaire, les nouveaux inscrits sur les listes électorales se font rares.
+
+<p>Enfin, l'abstention, qui progresse de 6 points entre 1997 et 2007, se situe dans la moyenne de la circonscription.
+
+<span class="authors">Anthony Jolly et Pierre Garrat</span>
+</div>
+
+
+
+
+
+<div class="enquête">
+<h1>Bastide-nord (Nuyens A), Thiers (Thiers A), Stade Galin (Thiers B), Jules-Simon (Jean Dauget A), Jean Dauguet (Jean Dauget B) et Benauge (Jean Dauget C).</h1>
+
+<p>La Bastide-Benauge fait figure d'exception dans cette carte. C’est l’un des rares endroits où Alain Juppé a progressé sur la période 1997-2007. Lors de la première élection du maire de Bordeaux en tant que député de la deuxième circonscription de Gironde, il totalisait 35,33 % des voix en moyenne dans les six bureaux que nous avons sélectionnés. Dix ans plus tard, il a perdu son siège mais a progressé de 3 points dans le secteur. Pas de quoi pavoiser certes, mais une performance notable dans ce quartier ouvrier traditionnellement acquis à la gauche. En 1997, les bureaux Bastide-nord (Nuyens A) et Thiers (Thiers A) sont les deux bureaux de la circonscription qui, après Saint-Michel, votent le plus à gauche (autour de 69 %). Aux dernières élections en 2007, le score de Michèle Delaunay y reste confortable (environ 63 %), mais la baisse est nette.
+
+
+<p>La politique de travaux engagée depuis plusieurs années dans le secteur n'est sans doute pas étrangère à cette poussée de la droite. Longtemps laissée à l'abandon, la Bastide a fait l'objet d'une importante politique de rénovation urbaine de la part de la municipalité. La création d'une zone d'aménagement concertée (ZAC) et la construction de logements sociaux ont dynamisé la rive droite. Conséquence : l'explosion du nombre d'inscrits dans le bureau Bastide-nord, qui a gagné 396 inscrits en dix ans. Une augmentation de 73 %, bien au-delà des 20 % en moyenne sur la circonscription.
+
+
+<p>« Le quartier de La Bastide est un trésor car il regorge de de friches urbaines, explique Emmnauelle Ajon, conseillère municipale socialiste à la mairie de Bordeaux. Ces grands travaux ont induit l'arrivée d'une nouvelle population, de nouvelles catégories socio-professionnelles. » Muriel Parcelier, adjointe à la mairie chargée du quartier, ne dit pas autre chose : « On voit beaucoup de jeunes couples qui investissent ici, ainsi que des retraités qui arrivent de l'extérieur de Bordeaux. » Des retraités qui recherchent la tranquillité tout en profitant du cœur de ville. Et qui auraient tendance à voter plus à droite que la population ouvrière historique du quartier.
+
+
+<p>Les chiffres avancés par Muriel Parcelier, qui revendique 35 à 40 % de logement social dans les nouvelles constructions du quartier, sont à relativiser selon Emmanuelle Ajon : « Il y a d'une part des logements sociaux classiques et d'autre part des logements qui sont réservés à des personnes qui travaillent. » Et des résidences de standing ont été construites sur des quartiers ouvriers. De manière assez abrupte, la population du quartier s'est trouvée modifiée «On veut faire de la mixité mais elle n'est pas homogène sur tout le territoire, ajoute Emmanuelle Ajon. Les ouvriers de la Bastide partent à une quarantaine kilomètres de Bordeaux. La politique municipale de mixité ne s’incarne pas à Saint-Seurin. »
+
+
+<p>Cette nouvelle donne sociale contraint le Parti socialiste à modifier sa stratégie dans le canton, au moins en partie. Emmanuelle Ajon, jeune élue - elle l’a été pour la première fois en 2008 - explique que le PS a du mal à évoluer. Tous n’auraient pas pris conscience de la modification de la population du quartier. Elle ne cache pas que, pour elle, il y a un problème de renouvellement des cadres : “On garde les même personnages. Daniel Jault est conseiller général depuis 1981 !”. Robert Lucante, le directeur de campagne de Michèle Delaunay, n’y va pas par quatre chemins : “Nous sommes mauvais sur la Bastide. La section locale est très indépendante. Peut-être trop.”.
+
+<p>Les bureaux de vote Jules-Simon, Jean-Dauguet et Benauge ne connaissent pas la même évolution que leurs voisins de la rive droite. Dans ces trois bureaux dessinés autour de la cité de la Benauge, le vote Delaunay a progressé entre 2004 et 2007 de deux points : 61 % en 2007. 
+
+
+<p>L’abstention aussi a augmenté : entre 1997 et 2007, elle a progressé de 11 et de 13 points dans les bureaux Jean-Dauguet et Benauge. Soit le double de la moyenne de la circonscription, qui s'établit autour de 6,5 points. « La Benauge est devenue une bulle ex-nihilo » regrette Emmanuelle Ajon. « Il y a très peu de liens entre le cœur de Bastide et la Benauge. »
+
+<p>D’après Muriel Parcelier, la Bastide devrait passer dans les 10 à 15 prochaines années de 15.000 à 30.000 habitants. Les cartes politiques risquent d’être très largement redistribuées.
+
+<span class="authors">Anthony Jolly et Pierre Garrat</span>
+</div>
+
+
+
+
+<div class="enquête">
+<h1>Stalingrad (Nuits C)</h1>
+
+<p>Le bureau de vote de Stalingrad (Nuits C) a longtemps été atypique sur la rouge rive droite de Bordeaux. Lors des scrutins de 1997, 2002 et 2004, il est le plus à droite du septième canton. Il est même le seul à avoir voté Alain Juppé, c’était en 2002 (50,93 %). Une sorte de tête de pont de la rive gauche à la Bastide. En 2007, il a brusquement rejoint les scores très à gauche de ses bureaux voisins du secteur « Nuits » (Sainte-Marie et Mauriac). En dix ans, la droite y perd près de 8 points.
+
+<p>Le secteur a beaucoup bougé : Stalingrad semble avoir bénéficié de la même « boboïsation » que Saint-Pierre, de l’autre côté du Pont de Pierre. Le bureau de vote a gagné près de 300 électeurs en dix ans, soit 30 % d’inscrits en plus. Sur l’ensemble de la circonscription, c’est la dixème plus forte hausse du nombre d’inscrits dans un même bureau de vote.
+
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Sainte-Marie (Nuits B) et Mauriac (Nuits A)</h1>
+
+<p>Stabilité : c’est le mot qui caractérise le mieux ces deux bureaux, aux deux tiers à gauche, au sud de la Bastide. En dix ans, Alain Juppé n’y perd que moins d’un point. Le nombre d’inscrits a lui aussi peu bougé : 71 électeurs de plus dans Sainte-Marie et seulement 45 dans Mauriac. Ce sont parmi les plus faibles progressions du nombre d’inscrits sur toute la circonscription.
+
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Saint-Pierre (Vieux-Bordeaux A), Saint-Rémi – Sainte-Catherine (Vieux-Bordeaux B) et Rousselle (Paul Bert A)</h1>
+
+<p>Évolutions assez comparables pour les trois bureaux qui recouvrent à peu près le quartier de Saint-Pierre. En 1997, le secteur était déjà globalement à gauche, voire très à gauche pour les bureaux Saint-Pierre (autour de la place du même nom et de la place du Palais) et de Rousselle. Depuis, les reculs d’Alain Juppé y sont assez comparables. Les baisses se situent entre six et huit points en dix ans. Saint-Pierre est même la 14ème plus forte de baisse de la droite, avec 7,74 points perdus.
+
+<p>Ce qui caractérise ces trois bureaux, c’est leur forte progression démographique qui se traduit par une hausse importante du nombre d’inscrits. C’est là l’un des effets de la rénovation du quartier. 25 % en plus dans Saint-Pierre, 40 % dans Saint-Rémi – Sainte-Catherine et même 50 % dans Rousselle, soit 569 inscrits en plus. C’est tout simplement le bureau où le nombre d’inscrits a le plus progressé en dix ans dans la circonscription. Conséquence, cette année, le secteur a été largement refondu et deux bureaux supplémentaires ont été créés.
+
+<p>Le niveau d’Alain Juppé n’est pas identique sur les trois bureaux. Saint-Rémi – Sainte-Catherine est un peu plus favorable au maire de Bordeaux. C’est là qu’il obtient ses meilleurs scores (plus de 47 % en 1997) et où il perd le moins de terrain (« seulement » 5,74 points) pour arriver à 41,45 % en 2007. Dans les deux autres bureaux, le maire culmine autour de 30 % en 2007.
+
+<p>Saint-Rémi – Saint-Christoly se distingue aussi par l’augmentation du niveau de l’abstention. Le taux y progresse nettement : plus de neuf points. Les nouveaux arrivants seraient-ils des abstentionnistes ? Pas si sûr. Dans Rousselle et Saint-Pierre, l’abstention ne bouge pas, avec respectivement 2,34 et 0,03 points de plus. Bien moins que la moyenne de la circonscription (+6,87) et que la moyenne nationale (environ dix points). Mais si le taux d’abstention ne progresse pas, c’est peut-être parce que ces deux bureaux étaient déjà les plus abstentionnistes en 1997 : quatrième place pour Rousselle et même la pôle position pour Saint-Pierre, avec 47 %.
+
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Pey-Berland – Saint-Christoly (Hôtel-de-Ville A) et Hôtel-de-Ville – Gambetta (Hôtel-de-Ville B)</h1>
+
+<p>Entre huit et dix points de perdus pour Alain Juppé, en dix ans, dans ces deux bureaux. Autrefois largement gagnant, obtenant jusqu’aux deux tiers des voix en 1997 dans Pey-Berland – Saint-Christoly, le maire a perdu se sa superbe en sa demeure. Ce dernier bureau a résisté en 2007, accordant encore plus de 55 % des voix à la droite. Mais pas Hôtel-de-Ville – Gambetta. Déjà moins à droite que son voisin en 1997 (57 %), il a donné, pour la première fois en 2007, une majorité de ses voix à la gauche, avec 52,5 % des suffrages pour Michèle Delaunay. Un symbole, bien sûr : la droite assiégée jusqu’aux portes de la mairie.
+
+<p>Le nombre d’inscrits a progressé, plus au moins dans la moyenne de la circonscription (autour de 20 %). Moins que dans le secteur voisin de Saint-Pierre, mais assez pour que les deux bureaux de l’Hôtel-de-Ville soient redessinés en trois pour les élections de 2012. L’occasion de déceler, plus finement, le secteur qui a basculé vers la gauche.
+
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Mériadeck (Saint-Bruno A), Piscine Judaïque (Saint-Bruno B) et Brach (Saint-Bruno C)
+
+<p>Voilà un quartier susceptible de basculer en cas de nouveaux progrès de la gauche à la législative de 2012. Ce n’est probablement pas un hasard si Michèle Delaunay, la députée socialiste, a installé son QG de campagne rue Judaïque. En 2007, il s’en était fallu d’une dizaine de voix pour que le bureau Piscine Judaïque ne bascule à gauche (50,88 % pour Alain Juppé). Les deux autres bureaux offrent des majorités plus nettes à la droite (55 % à Mériadeck, 53 % à Brach), loin toutefois des majorités bleues foncées de leurs voisins de Saint-Seurin, au nord de la rue Judaïque.
+
+<p>Dans Mériadeck et Piscine Judaïque, Alain Juppé connaît des baisses moyennes (autour de cinq points). Le bureau Brach se distingue car les deux blocs y font du surplace. Mieux, il fait partie des onze bureaux où Alain Juppé augmente son score entre 1997 et 2007 : +0,12 point… Sur ces 11 bureaux, c’est la plus faible progression de la droite. Dans ce secteur de Saint-Bruno, les causes de la relative stabilité sont peut-être à chercher dans la faible augmentation des inscrits : entre 9 et 15 %, bien moins que la moyenne de la circonscription, autour de 20 %.
+
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Roosevelt (Jacques Prévert C) et Barrière de Toulouse (Jacques Prévert D)</h1>
+
+<p>Sévère coup de barre à gauche pour l’extrême-sud de la circonscription. Alors que ces deux bureaux pointaient autour de 60 % pour Alain Juppé en 1997, ils se retrouvent très près de la barre des 50 % en 2007. Au bord du boulevard Roosevelt, le maire perd près de onze points (c’est sa sixème plus forte baisse en dix ans) et un peu plus de six à la Barrière de Toulouse.
+
+<p>Ce tropisme des électeurs vers la gauche ne s’explique ni par l’augmentation du nombre d’inscrits, ni par le taux d’abstention. La hausse du nombre d’inscrits, modérée ou dans la moyenne (16 à 19 % de plus), n’est pas suffisante pour estimer que le corps électoral a profondément changé dans le secteur. Le taux d’abstention, légèrement sous la moyenne de la circonscription (autour de 35 % en 2007), progresse assez peu (autour de quatre points de plus, alors que la moyenne est de sept points). On ne peut donc pas non plus parler d’une démobilisation de l’électorat de droite.
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>François Magendie (Jacques Prévert A), Prévert (Jacques Prévert B)</h1>
+
+Un secteur très à droite : celui de la Barrière de Pessac. Alain Juppé s’y situe toujours à un haut, voire très haut niveau en 2007 : 57 % dans Prévert et 67 % autour du lycée François Magendie. Mais dans ces deux bureaux, là aussi, le maire a perdu de sa superbe en dix ans. Dans le secteur autour de l’école Jacques Prévert, Alain Juppé frôlait les 70 % en 1997. En 10 ans, il y a perdu près de 12 points. C’est sa quatrième plus forte chute sur la circonscription. Ici, le nombre des inscrits a crû de 22 % (+ 214 inscrits) et l’abstention beaucoup progressé (près de dix points).  Dans François Magendie, où Alain Juppé perd moins que dans Prévert, mais tout de même 6,63 points, l’abstention progresse de 12 points : c’est la quatrième plus forte hausse en 10 ans. En revanche, le corps électoral évolue peu : le nombre d’inscrits n’augmente que de 18 unités.
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Saint-Genès (Sablières E)</h1>
+
+<p>Autour de l’ensemble scolaire catholique de Saint-Genès, ça ne bouge pas. Alain Juppé passe de 61,8 % en 1997 à 60,2 % en 2007. Gain net pour la gauche : 1,63 point. Ce bureau, où l’augmentation du nombre des inscrits n’a pas atteint les 10 % en dix ans, reste une terre de mission pour les socialistes. Faut-il l’expliquer par la présence de ce gros établissement scolaire privé ? Difficile à dire bien sûr. Toutes les familles ne sont probablement pas de droite et n’habitent pas toutes dans les environs immédiats. Mais remarquons quand même que le cas n’est pas unique à Bordeaux. Dans le très à droite quartier de Saint-Seurin, au nord de la circonscription, le bureau Sainte-Clotilde abrite le groupe scolaire privé du même nom. Là-bas non plus la droite ne bouge pas : Alain Juppé part de 69,7 % en 1997 pour arriver à 69,5 % en 2007.
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Belfort – République (Paul Bert C)</h1>
+
+<p>Le bureau Belfort – République suit globalement l’évolution de la circonscription tout entière. Défait de justesse en 1997, Alain Juppé y perd encore 5,36 points jusqu’en 2007 : - 4,92 sur la circonscription en moyenne. Même évolution pour le nombre des inscrits. Les abords du Palais de Justice et de l’Hôpital Saint-André ont gagné près de 19 % d’inscrits, contre 20 % pour l’ensemble de la circonscription. L’augmentation du taux d’abstention y est en revanche un peu plus forte que la moyenne : +8,97 points contre +6,87 pour toute la deuxième circonscription.
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Belfort – Libération (Paul Bert D)</h1>
+
+<p>Vers quel côté va pencher cette année le bureau Belfort – Libération ? Bien malin qui peut l’annoncer. Sur les quatre scrutins que nous présentons ici, les électeurs de ce secteur ont toujours donné des majorités différentes. Pour Gilles Savary (PS) en 1997, avec 52,15 % ; pour Alain Juppé en 2002, avec 53,47 % ; pour Michèle Delaunay en 2004 avec 54,64 % ; pour Alain Juppé en 2007 avec…50,08 %. Le maire de Bordeaux l’avait alors emporté de six voix sur son adversaire socialiste.
+
+<p>En dix ans, Alain Juppé a gagné 2,23 points sur ce bureau où l’augmentation du nombre des inscrits reste modérée (+10 %). Il n’y a que quatre bureaux où le maire de Bordeaux progresse plus.
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Carayon-Latour (Loucheur A), Loucheur (Loucheur B) et Charles-Perrens (Loucheur C)</h1>
+
+<p>Stabilité pour ce secteur composite du sud du quartier Saint-Augustin. Les bureaux Loucheur et Charles-Perrens sont nettement ancrés à gauche tandis que Carayon-Latour n’offrait en 2004 et 2007 que de faibles majorités pour Michèle Delaunay (moins de 51 %). Celui-ci mettait même Alain Juppé en tête en 1997 et 2002, là aussi avec de faibles majorités. Une « tache » bleue dans le secteur. Faut-il l’expliquer par la présence de la caserne militaire Carayon-Latour sur ce bureau ?
+
+<p>Globalement, le quartier est marqué par une grande stabilité : au pire, Alain Juppé perd en dix ans 2,88 points, autour de l’école Loucheur. Il n’en perd qu’un autour de Carayon-Latour - mais qui suffit à lui faire perdre la majorité - et il gagne 1,32 point dans Charles-Perrens. Rien de très significatif. Notons quand même dans Loucheur une forte poussée de la droite en 2002, qui échoue à 49,85 %.
+
+<p>Stabilité aussi au niveau de l’électorat : les hausses des inscrits y sont soit modérées (+10 % dans Carayon-Latour et Loucheur) soit quasi-nulles (+3 % dans Charles-Perrens).
+
+<p>En revanche, dans Loucheur et Charles-Perrens, l’abstention fait des bonds spectaculaires : respectivement +10,5 et +12 points. Ces deux bureaux restent dans la moyenne nationale avec un peu moins de 30 % en 1997 et autour de 40 % en 2007. Carayon-Latour, dans les mêmes eaux en 1997, a connu une évolution moins brutale pour n’arriver qu’à 35 % d’abstention en 2007.
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Clinique Saint-Augustin (Saint-Augustin A), Cité des Pêcheurs (Saint-Augustin B), Eglise Saint-Augustin (Saint-Augustin C) et Chaban-Delmas – Pellegrin (Saint-Augustin D)</h1>
+
+<p>Le nord du quartier Saint-Augustin est ancré à droite. Si on ne regarde que la date de départ (1997) et la date d’arrivée (2007), le secteur est aussi marqué par une grande stabilité. D’abord sur les résultats eux mêmes. Au pire, Alain Juppé perd 0,73 point dans le bureau Clinique Saint-Augustin. Dans les trois autres, il gagne du terrain, mais pas plus de 2,93 points dans Chaban-Delmas – Pellegrin. Le nombre des inscrits augmente dans des proportions bien en-deça de la moyenne de la circonscription (20 %) : seulement 5 % d’augmentation à la Cité des Pêcheurs et au mieux 13 % dans le bureau de l’Eglise Saint-Augustin. Le taux d’abstention augmente moins que la moyenne à part dans Chaban-Delmas – Pellegrin : +10,9 points.
+
+<p>Mais quand on regarde aussi les deux dates intermédiaires (2002 et 2004), les fluctuations sont parfois fortes dans le quartier. Le bureau Clinique Saint-Augustin, celui le plus à gauche, a même donné une fois la majorité de ses voix au candidat socialiste, en 2004 (51,58 % pour Michèle Delaunay), avant de retourner à droite en 2007 (51,05 % pour Alain Juppé). Ce bureau donne toujours des résultats serrés, à l’exception de 2002 (57,23 % pour Alain Juppé). Dans le bureau le plus à droite, Chaban-Delmas – Pellegrin, si l’augmentation finale n’est que de 3 points, à 63 %, la droite est montée jusqu’à 69 % en 2004.
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Millière – Victoire (Sablières A), Saint-Nicolas – Bergonié (Sablières B), Nansouty-centre (Sablières C)</h1>
+
+<p>Tangent en 1997, le secteur sous la place de la Victoire et le cours Aristide Briand et à l’ouest du cours de la Somme s’est très clairement arrimé à gauche dans la décennie suivante. En 1997, Alain Juppé ne l’emportait que dans un bureau (Millière – Victoire) et échouait de peu dans les deux autres. En 2002, il prenait l’avantage en l’emportant aussi dans Saint-Nicolas – Bergonié. Mais en 2004 et 2007, la gauche infligeait deux 3-0 à la droite. En 2007, les scores étaient tous très nets : 57, 58 voire 61 % pour le Parti socialiste.
+
+<p>Les pertes de Juppé sont les plus fortes là où il faisait ses meilleurs scores, dans Millière – Victoire. Il passe en dix ans de 53,31 % à 42,72 %. C’est sa septième plus forte baisse sur toute la circonscription. Les baisses dans Saint-Nicolas – Bergonié et dans Nansouty-centre, autour de sept points, sont aussi plus fortes que la moyenne.
+
+<p>Si on en croit l’évolution du nombre des inscrits dans ces trois bureaux, la population a beaucoup changé. Au moins 20 % de plus dans Nansouty-centre, 24 % dans Saint-Nicolas – Bergonié et même 32 % dans Millière – Victoire. Millière – Victoire, le bureau qui a connu les plus grands changements dans les résultats.
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>De Lerme – Palais Gallien (Malleret A) et Bas-Turenne (Malleret C)</h1>
+
+<p>Deux bureaux très à droite (plus de 58 % pour Alain Juppé en 2007) où l’évolution électorale est comparable : autour de six points perdus pour le maire en dix ans. Une baisse qui est donc légèrement plus prononcée que la moyenne : près de cinq points. L’abstention aussi a augmenté de manière très proche (autour de sept points), très exactement dans la moyenne.
+
+<p>Les deux bureaux se différencient sur l’augmentation du nombre d’inscrits. +15 % pour le bureau De Lerme – Palais Gallien et +31 % pour Bas-Turenne.
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+<div class="enquête">
+<h1>Triangle-d’Or (Malleret D)</h1>
+
+<p>Quatre élections, quatre scrutins où la droite a obtenu son meilleur score dans ce bureau entre la Place des Quinconces et le cours de l’Intendance, couvrant donc le Triangle-d’Or et les Allées de Tourny. 73 %, 75 %, 69 % et enfin 70 % en 2007. Si Alain Juppé perd bien un peu plus de trois points entre 1997 et 2007, il n’est absolument pas en danger dans le secteur.
+
+<p>Mais ce secteur, stable à droite, est atypique parmi ces bureaux. D’abord, le nombre des inscrits y a fortement progressé. 356 électeurs en plus, soit une augmentation de 41 %. Or, le plus souvent, la stabilité les bureaux de droite s’explique par un faible renouvellement de l’électorat. Ensuite, l’abstention y a nettement augmenté, près de huit points de plus en 2007 par rapport à 1997. L’abstention, à 42 % en 2007, y est donc plus élevée que la moyenne, comme lors des autres scrutins. Or, les bureaux de droite sont aussi, bien souvent, ceux qui votent le plus.
+
+<span class="authors">Pierre Garrat</span>
+</div>
+
+
+
+    
     </div>
   </body>
 </html>

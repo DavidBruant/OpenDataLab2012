@@ -1,0 +1,251 @@
+*{
+    margin: 0;
+    padding: 0;
+   -moz-box-sizing:    border-box;
+   -webkit-box-sizing: border-box;
+    box-sizing:        border-box;
+}
+
+html, body { height: 100%; }
+
+body > *{
+    position: fixed;
+    margin: 0.3em;
+    padding: 0.5em;
+}
+
+#mapContainer, #years{
+    width: 69%;
+}
+#credits, #infos{
+    width: 29%;
+}
+#mapContainer, #infos {
+    height: 78%;
+}
+#years, #credits {
+    height: 18%;
+}
+
+
+#mapContainer{
+    bottom: 0;
+    left: 0;
+    padding: 0;
+}
+
+#years{
+    background-color: #EEE;
+    top: 0;
+    left: 0;
+}
+    #years > *{
+        display: inline-block;
+        height: 100%;
+        width: 24%;
+        text-align: center;
+        vertical-align: middle;
+        
+        padding: 10px 0;
+    }
+    
+    .year{
+        display: inline-block;
+        padding: 20px;
+        /*height: 50%;
+        max-height: 60px;*/
+        
+        
+        background-color: white;
+        border-radius: 10px;
+        border: 2px dashed black;
+        cursor: pointer;
+        
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+        
+
+    
+
+#credits{
+    background-color: #DDD;
+    top: 0;
+    right: 0;
+}
+
+#infos{
+    bottom: 0;
+    right: 0;
+
+    padding:0;
+}
+
+
+    #infos > *{
+        padding: 0.5em;
+        width: 100%;
+        background-color: #CCC;
+        position: relative;
+    }
+    
+    #currentResult{
+        height: 65%;
+        top: 0;
+        position: absolute;
+        
+    }
+    
+    #comparison{
+        bottom: 0;
+        position: absolute;
+        
+        min-height: 50px;
+        bottom:0;
+        height: 30%;
+    }
+    
+    #bureauInfos{
+        position: relative;
+    }
+    
+    .otherInfos{
+        position: absolute;
+        bottom: 0;
+        text-transform: uppercase;
+        font-size: 0.7em;
+        padding-bottom: 0.5em;
+    }
+
+    .reg, .abst{
+        font-weight: bold;
+    }
+    
+    
+    
+    #currentYear{
+        border-bottom: 1px solid black;
+    }
+    #context{
+        border-bottom: 2px solid black;
+    }
+    
+    #bureau{
+        padding: 10px;
+        margin: 5px 0;
+        color: white;
+        font-weight: bold;
+    }
+    
+        .left{
+            background-color: #E5212E;
+        }
+        .right{
+            background-color: #1292BB;
+        }
+        
+    
+    #leftRight{
+        display: table;
+        /*border-collapse: collapse;*/
+        border-spacing: 5px 0px;
+        width: 100%;
+        
+        font-weight: bold;
+    }
+        #leftRight > *{
+            display: table-row;
+        }
+            #leftRight > * > *{
+               -moz-box-sizing:    border-box;
+               -webkit-box-sizing: border-box;
+                box-sizing:        border-box;
+                display: table-cell;
+                width: 50%;
+            }
+    
+    #candidates .left, #candidates .right{
+        color: white;
+        background-size: contain;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        height: 77px;
+        padding: 0.3em;
+        /*vertical-align: middle;*/
+
+    }
+    
+    #candidates .left{
+        background-image: url('./images/Gauche.png');
+    }
+    
+    #candidates .right{
+        background-image: url('./images/Droite.png');
+    }
+    
+#scores{
+    text-align: center;
+}
+    #scores > *{    
+        padding: 0.2em;
+        background-color: transparent;
+    }
+
+    #scores .left{
+        color: #E5212E;
+    }
+    #scores .right{
+        color: #1292BB;
+    }
+
+#progression, #yearChoice{
+    display:table-row;
+}
+
+#yearChoice{
+    font-weight: bold;
+
+}
+
+    #progression > *, #yearChoice > *{
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        padding: 0.3em 0;
+    }
+    
+    #yearChoice > *{
+        width: 20%;
+    }
+    
+    #progression .arrow{
+        background-color:transparent;
+        background-repeat: no-repeat;
+        background-position: center center;
+        width: 80%;
+        height: 35px;
+        color: white;
+        font-weight: bold;
+    }    
+    #progression .arrow.left{
+        background-image: url('./images/fleche_rouge.png');
+    }
+    #progression .arrow.right{
+        background-image: url('./images/fleche_bleue.png');
+        
+    }
+
+.chosenYear{
+    color: #F15A24;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+
+#map_canvas{
+    width: 100%;
+    height: 100%;
+    /* Google Maps adds:
+    position:relative
+    */
+}
