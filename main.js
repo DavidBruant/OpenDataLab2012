@@ -92,6 +92,9 @@ TODO:
     var dataDefer = new $.Deferred(),
         dataP = dataDefer.promise();
 
+    var enquetesDefer = new $.Deferred(),
+        enquetesP = enquetesDefer.promise();
+
     var currentYear;
     var currentBdv;
     
@@ -164,15 +167,15 @@ TODO:
                  after = currentYear;
             }
             
-            console.log(before, after);
+            //console.log(before, after);
             
             var beforeData, afterData;
             if(currentBdv === null){
                 // full data;
                 beforeData = computeYearInfos(data[before], before);
                 afterData = computeYearInfos(data[after], after);
-                console.log('beforeData', beforeData);
-                console.log('afterData', afterData);
+                //console.log('beforeData', beforeData);
+                //console.log('afterData', afterData);
             }
             else{
                 beforeData = data[before][currentBdv];
@@ -182,8 +185,8 @@ TODO:
             var beforeLeftCandidate = candidatesByYear[before]['gauche'];
             var afterLeftCandidate = candidatesByYear[after]['gauche']; 
 
-            console.log(beforeLeftCandidate, afterLeftCandidate);
-            console.log(afterData[afterLeftCandidate], beforeData[beforeLeftCandidate]);
+            //console.log(beforeLeftCandidate, afterLeftCandidate);
+            //console.log(afterData[afterLeftCandidate], beforeData[beforeLeftCandidate]);
 
             var deltaLeft = Math.round(100*(afterData[afterLeftCandidate] - beforeData[beforeLeftCandidate]))/100;
             $('#progression .arrow')
@@ -195,7 +198,7 @@ TODO:
             var deltaReg = afterData['Inscrits'] - beforeData['Inscrits'];
             $('#comparison .otherInfos .reg').text(deltaReg > 0 ? '+'+deltaReg : deltaReg);
             
-            console.log(afterData['Abst %'], beforeData['Abst %']);
+            //console.log(afterData['Abst %'], beforeData['Abst %']);
             var deltaAbst = Math.round(100*(afterData['Abst %'] - beforeData['Abst %']))/100;
             $('#comparison .otherInfos .abst').text( (deltaAbst > 0 ? '+'+deltaAbst : deltaAbst)+'%');
 
@@ -250,6 +253,34 @@ TODO:
         };
         
     })();
+
+
+
+    $(function(){
+        var on = false;
+
+        $('button.enquete').click(function(){
+            console.log('changing state to', !on);
+            if(on)
+                $('.enquete-panel').hide();
+            else
+                $('.enquete-panel').show();
+
+            on = !on;
+        });
+    });
+
+    function refreshEnqueteData(){
+        enquetesP.then(function(enquetes){
+            if(currentBdv in enquetes){
+                $('button.enquete').show();
+                $('.enquete-panel').empty().append(enquetes[currentBdv])
+            }
+            else{
+                $('button.enquete').hide();
+            }
+        });
+    }
 
     function displayCurrentYearMap(){
         $.when(dataP, polygonsP).then(function(data, polygons){
@@ -306,6 +337,7 @@ TODO:
             currentBdv = newBdv;
             refreshInfos();
             refreshComparisonData();
+            refreshEnqueteData();
         }
     }
     
@@ -447,7 +479,7 @@ TODO:
     
     // DATA
     (function(){
-        var data = Object.create(null); // TODO shim (+forEach, + map)
+        var data = {};
         
         var dataSources = {
             "1997": './data/Législatives bordeaux 1997.csv',
@@ -527,10 +559,52 @@ TODO:
         });
     
     })();
+
+
+    /**
+     * Create an object key-ed on bdv which contains enquetes.
+     * On bdv change, check if there is an enquête, display the "info" button (hide if not)
+     * When clicked, highlight all bdvs and display the enquete
+     *
+     *
+     */
+
+    $(function(){
+        var enquetes = {};
+
+        $(".enquete[data-bdvs]").each(function(i, e){
+            $(e).remove(); // will append to something else
+
+            $(e).data("bdvs").split('/') // '/'-separation is a convention
+                .forEach(function(bdv){
+                    enquetes[bdv] = e;
+                });
+
+            enquetesDefer.resolve(enquetes);
+        });
+
+    });
+
+    $.when(enquetesP, polygonsP).then(function(enquetes, polygons){
+        var enqKeys = Object.keys(enquetes);
+        var polygonKeys = Object.keys(polygons);
+
+        enqKeys.forEach(function(bdv){
+            if(!(bdv in polygons))
+                console.log(bdv, 'not in data')
+
+        });
+
+
+    });
+
+    // Enquêtes
+    $(function(){
+        $('#enquête').click(function(){
+        
+        })
     
-    
-    // Comparison
-    
+    });
     
     
     $.when(geomapP, polygonsP).then(function(geomap, polygons){

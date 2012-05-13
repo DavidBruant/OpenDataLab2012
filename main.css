@@ -34,6 +34,43 @@ body > *{
     padding: 0;
 }
 
+.enquete-panel{
+    display: none; /* initially */
+    background-color: #adff2f;
+
+    bottom: 2%;
+    left: 2%;
+    width: 65%;
+    height: 74%;
+
+    padding: 10px;
+    border-radius: 10px;
+
+    border: 1px dashed black;
+
+    font-size: 0.8em;
+
+    overflow-y: scroll;
+}
+
+    .enquete-panel h1{
+        font-size: 1.2em;
+    }
+
+    .enquete-panel p{
+        text-indent: 1.2em;
+        margin: 0.5em;
+
+    }
+
+    .enquete-panel .authors{
+        font-style: italic;
+        display: block;
+    }
+
+
+
+
 #years{
     background-color: #EEE;
     top: 0;
@@ -86,22 +123,34 @@ body > *{
         padding: 0.5em;
         width: 100%;
         background-color: #CCC;
-        position: relative;
+        position: absolute;
+    }
+    
+    #infos > button.enquete{
+        display: none; /* initially */
+
+        background: white url('./images/Bouton_info.png');
+        background-repeat: no-repeat;
+        background-position: -7px -7px;
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        border: 5px solid white;
+        
+        top:60%;
+        left:45%;
+        z-index:2;
     }
     
     #currentResult{
         height: 65%;
         top: 0;
-        position: absolute;
-        
     }
     
     #comparison{
         bottom: 0;
-        position: absolute;
         
         min-height: 50px;
-        bottom:0;
         height: 30%;
     }
     
@@ -207,6 +256,15 @@ body > *{
 
 }
 
+    .choice{
+        cursor: pointer;
+    }
+
+    .choice:hover{
+        border: 2px outset black;
+        border-radius: 10px;
+    }
+
     #progression > *, #yearChoice > *{
         display: table-cell;
         vertical-align: middle;
@@ -237,7 +295,6 @@ body > *{
 
 .chosenYear{
     color: #F15A24;
-    font-size: 1.2em;
     font-weight: bold;
 }
 
