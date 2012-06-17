@@ -637,8 +637,7 @@ if(!this.google){
 $(function(){
     var welcome = $("#welcome");
     welcome.find('button').click(function(){
-        console.log("Welcome button click");
-        welcome.remove();
+        welcome.fadeOut('1000', function(){ this.remove(); });
     })
 
 });
