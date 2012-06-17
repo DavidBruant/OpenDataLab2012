@@ -7,12 +7,37 @@
 }
 
 html, body { height: 100%; }
+body{
+   font-family: Helvetica;
+}
 
 body > *{
     position: fixed;
     margin: 0.3em;
     padding: 0.5em;
 }
+
+#welcome{
+    height: 100%;
+    width: 100%;
+    padding: 10%;
+    background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.84),  rgba(255, 255, 255, 0.85)), url("./images/fond.jpg");
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.84),  rgba(255, 255, 255, 0.85)), url("./images/fond.jpg");
+    background: -o-linear-gradient(top, rgba(255, 255, 255, 0.84),  rgba(255, 255, 255, 0.85)), url("./images/fond.jpg");
+    background-repeat: no-repeat, no-repeat;
+    background-position: center center, center center;
+
+    background-color: white;
+    z-index: 10;
+}
+
+#welcome p{
+    margin: 0 auto;
+
+}
+
+
+
 
 #mapContainer, #years{
     width: 69%;
@@ -36,7 +61,7 @@ body > *{
 
 .enquete-panel{
     display: none; /* initially */
-    background-color: #adff2f;
+    background-color: #ffe76a;
 
     bottom: 2%;
     left: 2%;
@@ -48,7 +73,7 @@ body > *{
 
     border: 1px dashed black;
 
-    font-size: 0.8em;
+    font-size: 0.9em;
 
     overflow-y: scroll;
 }
@@ -140,6 +165,8 @@ body > *{
         top:60%;
         left:45%;
         z-index:2;
+
+        cursor: pointer;
     }
     
     #currentResult{
@@ -193,7 +220,12 @@ body > *{
             background-color: #1292BB;
         }
         
-    
+        #scores .left, #scores .right{
+            font-size: 1.5em;
+
+        }
+
+
     #leftRight{
         display: table;
         /*border-collapse: collapse;*/
@@ -218,18 +250,24 @@ body > *{
         background-size: contain;
         background-color: transparent;
         background-repeat: no-repeat;
-        height: 77px;
+        text-align: center;
         padding: 0.3em;
-        /*vertical-align: middle;*/
-
     }
     
     #candidates .left{
-        background-image: url('./images/Gauche.png');
+        background-color: #E5212E;
+
+        -moz-box-shadow: 5px 5px 5px #B3212E;
+        -webkit-box-shadow: 5px 5px 5px #B3212E;
+        box-shadow: 5px 5px 5px #B3212E;
     }
     
     #candidates .right{
-        background-image: url('./images/Droite.png');
+        background-color: #1292BB;
+
+        -moz-box-shadow: 5px 5px 5px #007CBB;
+        -webkit-box-shadow: 5px 5px 5px #007CBB;
+        box-shadow: 5px 5px 5px #007CBB;
     }
     
 #scores{
@@ -258,10 +296,11 @@ body > *{
 
     .choice{
         cursor: pointer;
+        border: 2px outset transparent;
     }
 
     .choice:hover{
-        border: 2px outset black;
+        border-color: black;
         border-radius: 10px;
     }
 

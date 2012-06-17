@@ -1,14 +1,30 @@
 /*
 TODO:
-* Comparatif entre l'année courante et les autres années (en bas à droite)
-* Page d'accueil
-* Intégration des données 
-
-* Camenbert (batons)
-
+Close button
+Welcome screen + text
+Positioning
 */
 
+if(!this.google){
+    // Mock to avoid throwing when offline
+    this.google = {
+        maps: {
+            LatLng: function(){},
+            Polygon: function(){},
+            MapTypeId:{},
+            Map: function(){},
+            event:{
+                addListener: function(){}
+            }
+        }
+    };
 
+    this.google.maps.Polygon.prototype = {
+        setMap: function(){},
+        setOptions: function(){}
+    }
+
+}
 
 (function(){
     "use strict";
@@ -135,7 +151,7 @@ TODO:
             var rightScore = currentData[rightCandidate];
             var leftScore = currentData[leftCandidate];
         
-            $('#bureau').text(currentBdv === null ? 'Deuxième circonscription de Bordeaux' : currentBdv);
+            $('#bureau').text(currentBdv === null ? 'Deuxième circonscription de Gironde' : currentBdv);
             
             $('#bureau').removeClass('right')
                         .removeClass('left')
@@ -617,3 +633,12 @@ TODO:
     
 })();
 
+
+$(function(){
+    var welcome = $("#welcome");
+    welcome.find('button').click(function(){
+        console.log("Welcome button click");
+        welcome.remove();
+    })
+
+});
