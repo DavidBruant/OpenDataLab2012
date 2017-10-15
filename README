@@ -1,0 +1,7 @@
+TODO
+
+1. Fix to use leaflet api and a tile server
+2. Create web components for initial display (no interaction) and only write HTML
+3. Add redux to model all possible interactions and corresponding store
+4. Make the year picker interactive and re-rendered via dom-diffing
+5. Make the whole app interactive and re-rendered via dom-diffing
