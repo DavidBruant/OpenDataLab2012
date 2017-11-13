@@ -1,106 +1,37 @@
-/*
-TODO:
-Close button
-Welcome screen + text
-Positioning
-*/
+/**
+ * TODO :
+ * (tech) add redux + re-render logic
+ * (tech) make a map implementation that shows text
+ * (tech) make the year selector work
+ * 
+ * (tech) reimplement the side panel
+ * 
+ * (fun) make the welcome panel a panel on top of the map
+ * 
+ */
 
-document.body.append(TopLevel({
+
+let state = {
     years : [1997, 2002, 2004, 2007], 
     currentYear: 2007, 
-    electionDataByYear: new Map(), 
-    onYearChanged: () => console.log('onYearChanged')
-}))
+    electionDataByYear: new Map()
+};
+
+
+getElectionData()
+.then(d => console.log('election data', d))
+
+
+document.body.append(TopLevel(
+    Object.assign(
+        {onYearChanged: () => console.log('onYearChanged')},
+        state
+    )
+))
+
 
 /*
-if(!this.google){
-    // Mock to avoid throwing when offline
-    this.google = {
-        maps: {
-            LatLng: function(){},
-            Polygon: function(){},
-            MapTypeId:{},
-            Map: function(){},
-            event:{
-                addListener: function(){}
-            }
-        }
-    };
 
-    this.google.maps.Polygon.prototype = {
-        setMap: function(){},
-        setOptions: function(){}
-    }
-
-}
-
-(function(){
-    "use strict";
-    var DOUBLE_QUOTE = '"';
-    
-    String.prototype.unquote = function(){
-        if(this[0] === DOUBLE_QUOTE && this[this.length-1] === DOUBLE_QUOTE){
-            return this.substring(1, this.length-1);
-        }
-        if(this[0] !== DOUBLE_QUOTE && this[this.length-1] !== DOUBLE_QUOTE){
-            return this;
-        }
-        
-        console.warn("unhandled case", this);
-    };
-
-})();
-
-
-(function(global){
-
-    global.bdvColor = function(winningSide, percentage){
-        // HSL are far easier to figure out for color scales
-        var H = winningSide === 'droite' ? 225 : 356 ;
-        var S = 0.9;
-        var L = (150 - percentage - 25)/100; 
-        
-        // console.log("light", L);
-        
-        // Computing RGB for compat http://en.wikipedia.org/wiki/HSL_and_HSV
-        var C = (1 - Math.abs(2*L -1))*S;
-        var Hp = H/60;
-        var X = C*(1 - Math.abs(Hp%2 -1));
-        
-        var R1, G1, B1;
-        switch(Math.floor(Hp)){
-            case 0:
-                R1 = C; G1 = X; B1 = 0;
-                break;
-            case 1:
-                R1 = X; G1 = C; B1 = 0;
-                break;
-            case 2:
-                R1 = 0; G1 = C; B1 = X;
-                break;
-            case 3:
-                R1 = 0; G1 = X; B1 = C;
-                break;
-            case 4:
-                R1 = X; G1 = 0; B1 = C;
-                break;
-            case 5:
-                R1 = C; G1 = 0; B1 = X;
-                break;
-        }
-        
-        var m = L - C/2;
-        
-        var R = Math.floor(360*(R1 + m));
-        var G = Math.floor(360*(G1 + m));
-        var B = Math.floor(360*(B1 + m));
-        
-        var ret = 'rgb('+[R,G,B].join(',')+')'
-        // console.log('color', ret);
-        return ret;
-    };
-    
-})(this);
 
 
 (function(){
@@ -502,87 +433,7 @@ if(!this.google){
     
     
     // DATA
-    (function(){
-        var data = {};
-        
-        var dataSources = {
-            "1997": './data/Législatives bordeaux 1997.csv',
-            "2002": './data/Législatives bordeaux 2002.csv',
-            "2004": './data/Législatives bordeaux 2004.csv',
-            "2007": './data/Législatives bordeaux 2007.csv'
-        };
-        
-        var dataDefers = Object.keys(dataSources).map(function(){return new $.Deferred();});
-        var dataPs = dataDefers.map(function(def){return def.promise();});
-        
-        $.when.apply(undefined, dataPs).then(function(){
-            //console.log('all dataPs', data);
-            dataDefer.resolve(data);
-        });
-        
-        //console.log(dataPs.length);
-        
-        Object.keys(dataSources).forEach(function(year, i){
-            var url = dataSources[year];
-        
-            var yearData = data[year] = Object.create(null);
-            
-            $.ajax({
-                url: url,
-                dataType: "text"
-            }).then(function(csvData){
-                //console.log('CSV retrieved');
-                // parsing CSV
-                var lines = csvData.split('\n');
-                lines.forEach(function(l, i){
-                    lines[i] = lines[i].split(';');
-
-                    // removing freaking quote
-                    lines[i].forEach(function(e, j){
-                        lines[i][j] = e.unquote() || lines[i][j];
-                    });
-                });
-                
-                var firstLine = lines.shift();
-                //console.log("firstLine", firstLine);
-                
-                var dataArray = lines.map(function(l){
-                    var d = {};
-                    
-                    l.forEach(function(val, i){
-                        var key = firstLine[i];
-                        
-                        switch(key){
-                            case "Inscrits":
-                            case "Nuls":
-                                val = parseInt(val);
-                                break;
-                            case "Abst %":
-                            case "Delaunay (PS)":
-                            case "Juppé (UMP)":
-                                val = parseFloat(val);
-                                break;
-                        }
-                    
-                        d[key] = val;
-                    });
-                    
-                    return d;
-                });
-                
-                dataArray.forEach(function(e, i){
-                    var key = e.Nom;
-                    if(!key || key === 'Total')
-                        return;
-
-                    yearData[key] = e;
-                });
-
-                dataDefers[i].resolve();
-            });
-        });
     
-    })();
 
 
     
