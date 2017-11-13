@@ -5,6 +5,14 @@ Welcome screen + text
 Positioning
 */
 
+document.body.append(TopLevel({
+    years : [1997, 2002, 2004, 2007], 
+    currentYear: 2007, 
+    electionDataByYear: new Map(), 
+    onYearChanged: () => console.log('onYearChanged')
+}))
+
+/*
 if(!this.google){
     // Mock to avoid throwing when offline
     this.google = {
@@ -577,13 +585,11 @@ if(!this.google){
     })();
 
 
-    /**
-     * Create an object key-ed on bdv which contains enquetes.
-     * On bdv change, check if there is an enquête, display the "info" button (hide if not)
-     * When clicked, highlight all bdvs and display the enquete
-     *
-     *
-     */
+    
+    // Create an object key-ed on bdv which contains enquetes.
+    // On bdv change, check if there is an enquête, display the "info" button (hide if not)
+    // When clicked, highlight all bdvs and display the enquete
+
 
     $(function(){
         var enquetes = {};
@@ -640,4 +646,5 @@ $(function(){
         welcome.fadeOut('1000', function(){ this.remove(); });
     })
 
-});
+}
+*/

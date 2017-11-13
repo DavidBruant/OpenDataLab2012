@@ -6,13 +6,16 @@
     <link rel="stylesheet" href="main.css">
     
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAcwvPWwZKDsjt8fa0gAOTgwP0PvuizjgE&sensor=false"> </script>
-    <script src="js/jquery.js"> </script>
-    <script src="js/main.js"> </script>
+
+    <script defer src="js/jquery.js"> </script>
+    <script defer src="js/components/TopLevel.js"> </script>
+    <script defer src="js/main.js"> </script>
     
     <title>Open data lab - Législatives 2ème circonscription de Gironde</title>
   </head>
   <body>
   
+    <!--
     <div id=welcome>
         <h1>Législatives, Où Alain Juppé a-t-il perdu?</h1>
         <p>Retour sur les quatres derniers scrutins dans la circonscription de Bordeaux-Centre</p>
@@ -29,18 +32,8 @@
 
         <span><a href="http://www.flickr.com/photos/kraka-manu/4481261066/">Crédit Photo: ManuB. Licence CC-BY-NC-SA</a></span>
     </div>
+    -->
   
-  
-    <div id="years">
-        <div><button class="year" data-year=1997>1997</button></div>
-        <div><button class="year" data-year=2002>2002</button></div>
-        <div><button class="year" data-year=2004>2004</button></div>
-        <div><button class="year" data-year=2007>2007</button></div>
-    </div>
-    
-    <div id="credits"><img width="100" style='float:left; margin-right:10px;' src="./images/Logo-creative-commons-by-sa.jpg">
-    Data-visualisation effectuée par: David Bruant, Martin Caro, Pierre Garrat, Anthony Jolly et Maxence Kagni.
-    <a href='./sources/index.html'>Sources de données</a></div>
 
     <div id="mapContainer"> <div id="map_canvas"></div> </div>
 
