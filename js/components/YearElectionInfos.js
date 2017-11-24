@@ -1,6 +1,4 @@
-'use strict';
-
-var candidatesByYear = {
+const candidatesByYear = {
     "1997": {
         gauche: "Savary (PS)",
         droite: "Juppé (RPR)"
@@ -62,7 +60,7 @@ function computeYearInfos(yearData, year){
     return result;
 }
 
-function YearElectionInfos(currentYear, electionData){
+export default function YearElectionInfos(currentYear, electionData){
     const div = document.createElement('div');
     div.id = 'infos';
 

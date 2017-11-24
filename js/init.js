@@ -1,6 +1,6 @@
-if(!this.google){
+if(!window.google){
     // Mock to avoid throwing when offline
-    this.google = {
+    window.google = {
         maps: {
             LatLng: function(){},
             Polygon: function(){},
@@ -12,7 +12,7 @@ if(!this.google){
         }
     };
 
-    this.google.maps.Polygon.prototype = {
+    window.google.maps.Polygon.prototype = {
         setMap: function(){},
         setOptions: function(){}
     }
@@ -85,4 +85,4 @@ if(!this.google){
         return ret;
     };
     
-})(this);
+})(window);

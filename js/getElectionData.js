@@ -58,7 +58,7 @@ function processCSV(csvData){
     return yearData;
 }
 
-function getElectionData(){
+export default function getElectionData(){
     return Promise.all(
         Object.keys(dataSources).map(y => {
             return fetch(dataSources[y])

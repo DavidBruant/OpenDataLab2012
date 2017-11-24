@@ -9,7 +9,10 @@
  * 
  */
 
-const {createStore} = Redux;
+import {createStore} from 'redux';
+import './init.js';
+import TopLevel from './components/TopLevel';
+import getElectionData from './getElectionData';
 
 const ELECTION_DATA = 'ELECTION_DATA';
 const CHANGE_SELECTED_YEAR = 'CHANGE_SELECTED_YEAR';

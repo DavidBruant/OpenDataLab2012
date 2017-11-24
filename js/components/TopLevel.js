@@ -1,6 +1,6 @@
-'use strict';
+import YearElectionInfos from './YearElectionInfos';
 
-function TopLevel({years, currentYear, electionDataByYear, onYearChanged}){
+export default function TopLevel({years, currentYear, electionDataByYear, onYearChanged}){
     const div = document.createElement('div');
     div.classList.add('container');
 
