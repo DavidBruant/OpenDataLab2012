@@ -1,9 +1,10 @@
 /**
  * TODO :
- * (tech) make the year selector work
- * 
- * (tech) reimplement the side panel
- * 
+ * (tech) add nanomorph
+ *
+ * (fun) create an actual map
+ * (fun) make bureau de vote clickable with side panel
+ * (fun) finish side panel (with year comparison at bottom)
  * (fun) make the welcome panel a panel on top of the map
  * 
  */
@@ -41,6 +42,9 @@ const store = createStore(
     }
 )
 
+//let tree = document.createElement('div');
+//document.body.append(tree); 
+
 store.subscribe(state => {
     document.body.innerHTML = '';
 
@@ -49,7 +53,8 @@ store.subscribe(state => {
             {onYearChanged: year => store.dispatch({type: CHANGE_SELECTED_YEAR, year})},
             store.getState()
         )
-    ))
+    ));
+
 })
 
 

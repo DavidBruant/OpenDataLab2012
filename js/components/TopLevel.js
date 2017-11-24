@@ -1,16 +1,16 @@
 'use strict';
 
 function TopLevel({years, currentYear, electionDataByYear, onYearChanged}){
-    const frag = document.createDocumentFragment();
-    console.log('selected', currentYear)
+    const div = document.createElement('div');
+    div.classList.add('container');
 
-    frag.append(
+    div.append(
         YearSelector(years, currentYear, onYearChanged),
         Credits(),
         ElectionMap(electionDataByYear.get(currentYear)),
         YearElectionInfos(currentYear, electionDataByYear.get(currentYear))
     )
-    return frag;
+    return div;
 }
 
 function YearSelector(years, currentYear, onYearChanged){
