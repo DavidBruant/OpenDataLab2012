@@ -10,24 +10,49 @@
  * 
  */
 
+const {createStore} = Redux;
 
-let state = {
-    years : [1997, 2002, 2004, 2007], 
-    currentYear: 2007, 
-    electionDataByYear: new Map()
-};
+const ELECTION_DATA = 'ELECTION_DATA';
+
+const store = createStore(
+    (state, action) => {
+        const {type} = action;
+        switch(type){
+            case ELECTION_DATA: {
+                const {electionDataByYear} = action;
+                state.electionDataByYear = electionDataByYear;
+                return state;
+            }
+            default: {
+                console.warn('unknown action type', type);
+                return state;
+            }
+        }
+    },
+    {
+        years : [1997, 2002, 2004, 2007], 
+        currentYear: 2007, 
+        electionDataByYear: new Map()
+    }
+)
+
+store.subscribe(state => {
+    console.log('state', store.getState());
+
+    document.body.append(TopLevel(
+        Object.assign(
+            {onYearChanged: () => console.log('onYearChanged')},
+            store.getState()
+        )
+    ))
+})
 
 
 getElectionData()
-.then(d => console.log('election data', d))
+.then(electionDataByYear => store.dispatch({type: ELECTION_DATA, electionDataByYear}))
 
 
-document.body.append(TopLevel(
-    Object.assign(
-        {onYearChanged: () => console.log('onYearChanged')},
-        state
-    )
-))
+
 
 
 /*

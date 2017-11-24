@@ -1,0 +1,11 @@
+{
+  "name": "legislative-juppe",
+  "version": "1.0.0",
+  "description": "TODO",
+  "scripts": {
+    "start": "http-server"
+  },
+  "devDependencies": {
+    "http-server": "^0.10.0"
+  }
+}
