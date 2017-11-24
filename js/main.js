@@ -35,8 +35,9 @@ const store = createStore(
     },
     {
         years : [1997, 2002, 2004, 2007], 
-        currentYear: 2007, 
-        electionDataByYear: new Map()
+        currentYear: 2002, 
+        electionDataByYear: new Map(),
+        currentBdv: undefined
     }
 )
 
@@ -82,24 +83,7 @@ getElectionData()
     var currentYear;
     var currentBdv;
     
-    var candidatesByYear = {
-        "1997": {
-            gauche: "Savary (PS)",
-            droite: "Juppé (RPR)"
-        },
-        "2002": {
-            gauche: "Paoletti (PS)",
-            droite: "Juppé (UMP)"
-        },
-        "2004": {
-            gauche: "Delaunay (PS)",
-            droite: "Martin (UMP)"
-        },
-        "2007": {
-            gauche: "Delaunay (PS)",
-            droite: "Juppé (UMP)"
-        }
-    }
+
     
     function refreshInfos(){
         dataP.then(function(data){
@@ -123,7 +107,7 @@ getElectionData()
             
             $('#bureau').removeClass('right')
                         .removeClass('left')
-                        .addClass(rightScore < leftScore ? 'left' : 'right');
+                        .addClass();
             
             $('#candidates .left').text(leftCandidate);
             $('#candidates .right').text(rightCandidate);
@@ -331,50 +315,6 @@ getElectionData()
         refreshInfos(); // refresh infos first as the map may take longer to refresh
         displayCurrentYearMap();
         refreshComparison();
-    }
-
-
-    function computeYearInfos(yearData, year){
-        var leftCandidate = candidatesByYear[year]['gauche'];
-        var rightCandidate = candidatesByYear[year]['droite'];
-            
-        var totalRegistered = 0;
-        var totalAbstentionists = 0;
-        var totalRightVotes = 0;
-        var totalLeftVotes = 0;
-        var totalBlankVotes = 0;
-        
-        Object.keys(yearData).forEach(function(bdv){
-            var currentData = yearData[bdv];
-            
-            var registered = currentData['Inscrits'];
-            var abstentionists = registered*currentData['Abst %']/100; // keeping division approx
-            var voters = registered - abstentionists;
-            var blanks = currentData['Nuls'];
-            var nonBlankVoters = voters - blanks; 
-            
-            totalRegistered += registered;
-            totalAbstentionists += abstentionists;
-            totalRightVotes += nonBlankVoters*currentData[rightCandidate]/100;
-            totalLeftVotes += nonBlankVoters*currentData[leftCandidate]/100;
-            totalBlankVotes += blanks;
-        });
-        
-        var result = {
-            'Inscrits' : totalRegistered,
-            'Abst %' : Math.round(10000*totalAbstentionists/totalRegistered)/100,
-            totalBlankVotes : totalBlankVotes
-        };
-                
-        var leftCandidate = candidatesByYear[year]['gauche'];
-        var rightCandidate = candidatesByYear[year]['droite'];
-
-        var totalNonBlankVoters = totalRegistered - totalAbstentionists - totalBlankVotes;
-
-        result[leftCandidate] = Math.round(10000*Math.round(totalLeftVotes)/totalNonBlankVoters)/100;
-        result[rightCandidate] = Math.round(10000*Math.round(totalRightVotes)/totalNonBlankVoters)/100;
-        
-        return result;
     }
     
     

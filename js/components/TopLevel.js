@@ -1,3 +1,4 @@
+'use strict';
 
 function TopLevel({years, currentYear, electionDataByYear, onYearChanged}){
     const frag = document.createDocumentFragment();
@@ -6,8 +7,8 @@ function TopLevel({years, currentYear, electionDataByYear, onYearChanged}){
     frag.append(
         YearSelector(years, currentYear, onYearChanged),
         Credits(),
-        ElectionMap(electionDataByYear.get(currentYear)),/*
-        YearElectionInfos(electionDataByYear.get(currentYear))*/
+        ElectionMap(electionDataByYear.get(currentYear)),
+        YearElectionInfos(currentYear, electionDataByYear.get(currentYear))
     )
     return frag;
 }
@@ -48,5 +49,3 @@ function ElectionMap(electionData){
 
     return div;
 }
-
-function YearElectionInfos(){}
