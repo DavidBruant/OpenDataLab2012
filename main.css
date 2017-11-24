@@ -37,13 +37,13 @@ body > *{
 
 
 
-#mapContainer, .year-selector{
+.map-container, .year-selector{
     width: 69%;
 }
 .credits, #infos{
     width: 29%;
 }
-#mapContainer, #infos {
+.map-container, #infos {
     height: 78%;
 }
 .credits {
@@ -51,7 +51,7 @@ body > *{
 }
 
 
-#mapContainer{
+.map-container{
     bottom: 0;
     left: 0;
     padding: 0;
@@ -105,7 +105,7 @@ body > *{
     justify-content: space-around;
     align-items: center;    
 }
-    .year-selector > *{
+    .year-selector > button{
         text-align: center;
         
         padding: 1em;
@@ -119,7 +119,9 @@ body > *{
         font-size: 1.5em;
     }
         
-
+    .year-selector > button.selected{
+        border-color: gold;
+    }
     
 
 .credits{
@@ -330,10 +332,3 @@ body > *{
 }
 
 
-#map_canvas{
-    width: 100%;
-    height: 100%;
-    /* Google Maps adds:
-    position:relative
-    */
-}

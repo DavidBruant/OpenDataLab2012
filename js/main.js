@@ -1,7 +1,5 @@
 /**
  * TODO :
- * (tech) add redux + re-render logic
- * (tech) make a map implementation that shows text
  * (tech) make the year selector work
  * 
  * (tech) reimplement the side panel
@@ -13,6 +11,7 @@
 const {createStore} = Redux;
 
 const ELECTION_DATA = 'ELECTION_DATA';
+const CHANGE_SELECTED_YEAR = 'CHANGE_SELECTED_YEAR';
 
 const store = createStore(
     (state, action) => {
@@ -21,6 +20,11 @@ const store = createStore(
             case ELECTION_DATA: {
                 const {electionDataByYear} = action;
                 state.electionDataByYear = electionDataByYear;
+                return state;
+            }
+            case CHANGE_SELECTED_YEAR: {
+                const {year} = action;
+                state.currentYear = year;
                 return state;
             }
             default: {
@@ -37,11 +41,11 @@ const store = createStore(
 )
 
 store.subscribe(state => {
-    console.log('state', store.getState());
+    document.body.innerHTML = '';
 
     document.body.append(TopLevel(
         Object.assign(
-            {onYearChanged: () => console.log('onYearChanged')},
+            {onYearChanged: year => store.dispatch({type: CHANGE_SELECTED_YEAR, year})},
             store.getState()
         )
     ))
