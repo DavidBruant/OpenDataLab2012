@@ -1,6 +1,5 @@
 /**
  * TODO :
- * (tech) add nanomorph
  *
  * (fun) create an actual map
  * (fun) make bureau de vote clickable with side panel
@@ -10,6 +9,7 @@
  */
 
 import {createStore} from 'redux';
+import morph from 'nanomorph';
 import './init.js';
 import TopLevel from './components/TopLevel';
 import getElectionData from './getElectionData';
@@ -45,13 +45,12 @@ const store = createStore(
     }
 )
 
-//let tree = document.createElement('div');
-//document.body.append(tree); 
+let tree = document.createElement('div');
+document.body.append(tree); 
 
 store.subscribe(state => {
-    document.body.innerHTML = '';
 
-    document.body.append(TopLevel(
+    morph(tree, TopLevel(
         Object.assign(
             {onYearChanged: year => store.dispatch({type: CHANGE_SELECTED_YEAR, year})},
             store.getState()
